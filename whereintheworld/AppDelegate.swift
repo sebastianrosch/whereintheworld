@@ -151,12 +151,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                         }
                     }
                 }
-
+                
                 // Fourth pass trying to identify country and locality.
                 if location == "" || country == "" {
                     for address in addressDetails!.results {
                         for component in address.addressComponents {
                             if component.types.contains("locality") {
+                                location = component.longName
+                                locationType = "city"
+                            }
+                            if component.types.contains("country") {
+                                country = component.longName
+                                countryCode = component.shortName
+                            }
+                        }
+                    }
+                }
+                
+                // Fifth pass trying to identify country and locality.
+                if location == "" || country == "" {
+                    for address in addressDetails!.results {
+                        for component in address.addressComponents {
+                            if component.types.contains("administrative_area_level_3") {
                                 location = component.longName
                                 locationType = "city"
                             }
