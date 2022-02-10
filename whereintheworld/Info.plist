@@ -27,7 +27,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2020 Sebastian Rosch. All rights reserved.</string>
+	<string>Copyright © 2022 Sebastian Rosch. All rights reserved.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Update your Slack status</string>
 	<key>NSMainStoryboardFile</key>

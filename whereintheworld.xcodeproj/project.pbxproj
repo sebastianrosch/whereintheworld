@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,7 @@
 		9EDF9437241FD63900F01A67 /* Keys_example.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EDF9436241FD63900F01A67 /* Keys_example.plist */; };
 		9EDF9439241FDFF000F01A67 /* Locations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EDF9438241FDFF000F01A67 /* Locations.plist */; };
 		9EDF943B241FE40400F01A67 /* Locations_example.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EDF943A241FE40400F01A67 /* Locations_example.plist */; };
+		9EE6A43C27B5BB0900DE25B7 /* SlackModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		9EDF9436241FD63900F01A67 /* Keys_example.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys_example.plist; sourceTree = "<group>"; };
 		9EDF9438241FDFF000F01A67 /* Locations.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Locations.plist; sourceTree = "<group>"; };
 		9EDF943A241FE40400F01A67 /* Locations_example.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Locations_example.plist; sourceTree = "<group>"; };
+		9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				9EDF9436241FD63900F01A67 /* Keys_example.plist */,
 				9EC45D8523F307360060C845 /* whereintheworld.entitlements */,
 				9EC45D7E23F307360060C845 /* Preview Content */,
+				9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */,
 			);
 			path = whereintheworld;
 			sourceTree = "<group>";
@@ -135,7 +138,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = "Sebastian Rosch";
 				TargetAttributes = {
 					9EC45D7423F307330060C845 = {
@@ -144,7 +147,7 @@
 				};
 			};
 			buildConfigurationList = 9EC45D7023F307330060C845 /* Build configuration list for PBXProject "whereintheworld" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -187,6 +190,7 @@
 				9EC45D8E23F308A10060C845 /* DarkMode.swift in Sources */,
 				9EC45D7923F307330060C845 /* AppDelegate.swift in Sources */,
 				9EC45D8C23F307F00060C845 /* StatusItemController.swift in Sources */,
+				9EE6A43C27B5BB0900DE25B7 /* SlackModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +234,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -290,6 +295,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -334,7 +340,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sebastianrosch.whereintheworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -358,7 +364,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sebastianrosch.whereintheworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

@@ -3,7 +3,7 @@
 //  whereintheworld
 //
 //  Created by Sebastian Rosch on 11/02/2020.
-//  Copyright © 2020 Sebastian Rosch. All rights reserved.
+//  Copyright © 2022 Sebastian Rosch. All rights reserved.
 //
 
 import Cocoa

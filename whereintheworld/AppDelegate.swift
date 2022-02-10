@@ -3,7 +3,7 @@
 //  whereintheworld
 //
 //  Created by Sebastian Rosch on 11/02/2020.
-//  Copyright © 2020 Sebastian Rosch. All rights reserved.
+//  Copyright © 2022 Sebastian Rosch. All rights reserved.
 //
 
 import Cocoa
@@ -66,8 +66,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
         }
         
         let location = locations[0]
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
         
-        let url = String(format: "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%@", location.coordinate.latitude, location.coordinate.longitude, self.googleMapsKey)
+        // Debug locations.
+        // WeWork Waterloo
+        // latitude = 51.5040783
+        // longitude = -0.1164418
+        
+        let url = String(format: "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%@", latitude, longitude, self.googleMapsKey)
         
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
@@ -184,13 +191,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                     }
                 }
                 
-                var fullLocation = ""
+                if country == "United Kingdom" {
+                    country = "UK"
+                }
                 
+                // Build the location name.
+                var fullLocation = ""
                 if locationType == "airport" {
                     fullLocation = "✈️ " + location + ", " + country
                 } else if locationType == "home" {
                     fullLocation = "🏠 " + location + ", " + country
-                } else if locationType == "office" {
+                } else if locationType == "office" || locationType == "wework" {
                     fullLocation = "🏢 " + location + ", " + country
                 } else {
                     fullLocation = location + ", " + country
@@ -198,8 +209,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 self.statusItemController.location = fullLocation
                 print(fullLocation)
                 
-
-                // Update Slack status
+                // Build the emoji.
                 var emoji = ":earth_africa:"
                 if locationType == "airport" {
                     emoji = ":airplane:"
@@ -207,38 +217,76 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                     emoji = ":house:"
                 } else if locationType == "office" {
                     emoji = ":office:"
+                } else if locationType == "wework" {
+                    emoji = ":wework:"
                 } else if countryCode != "" {
                     emoji = ":flag-" + countryCode.lowercased() + ":"
                 }
                 
-                let body = String(format: """
-                {
-                    "profile": {
-                        "status_text": "%@",
-                        "status_emoji": "%@",
-                        "status_expiration": 0
-                    }
-                }
-                """, location + ", " + country, emoji)
-                
-                var statusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.set")!)
-                statusRequest.httpMethod = "POST"
-                statusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                statusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
-                statusRequest.httpBody = body.data(using: .utf8)
+                // Check the current Slack status before updating it.
+                var getStatusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.get")!)
+                getStatusRequest.httpMethod = "GET"
+                getStatusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                getStatusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
 
                 let session = URLSession.shared
-                let task = session.dataTask(with: statusRequest, completionHandler: { data, response, error -> Void in
+                let getStatusTask = session.dataTask(with: getStatusRequest, completionHandler: { data, response, error -> Void in
                     do {
                         if error != nil {
-                            print("error updating Slack status: \(String(describing: error))")
+                            print("error getting Slack status: \(String(describing: error))")
                             return
                         }
-                        print("updated Slack status")
+                        
+                        // Read HTTP Response Status code
+                        if let response = response as? HTTPURLResponse {
+                            print("Response HTTP Status code: \(response.statusCode)")
+                        }
+                        
+                        print("retrieved Slack status")
+                        
+                        let decoder = JSONDecoder()
+                        
+                        do {
+                            let profile = try decoder.decode(ProfileWrapper.self, from: data!)
+                            
+                            // If in a Zoom call, do not update.
+                            if profile.profile?.status_emoji != ":zoom:" {
+                                
+                                let newStatus = ProfileWrapper(
+                                    profile: Profile(
+                                        status_text: location + ", " + country,
+                                        status_emoji: emoji,
+                                        status_expiration: 0))
+                                
+                                let jsonEncoder = JSONEncoder()
+                                let jsonData = try jsonEncoder.encode(newStatus)
+                                let json = String(data: jsonData, encoding: String.Encoding.utf8)
+                                
+                                var setStatusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.set")!)
+                                setStatusRequest.httpMethod = "POST"
+                                setStatusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                                setStatusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
+                                setStatusRequest.httpBody = json?.data(using: .utf8)
+
+                                let setStatusTask = session.dataTask(with: setStatusRequest, completionHandler: { data, response, error -> Void in
+                                    do {
+                                        if error != nil {
+                                            print("error updating Slack status: \(String(describing: error))")
+                                            return
+                                        }
+                                        print("updated Slack status")
+                                    }
+                                })
+
+                                setStatusTask.resume()
+                            }
+                        } catch {
+                            print("Response failed to decode")
+                        }
                     }
                 })
-
-                task.resume()
+                
+                getStatusTask.resume()
             }
         })
 
