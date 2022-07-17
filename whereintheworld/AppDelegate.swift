@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
     var knownLocations : NSDictionary?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        // Load the API keys.
         var keys: NSDictionary?
         if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
             keys = NSDictionary(contentsOfFile: path)
@@ -30,6 +30,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
             googleMapsKey = dict["googleMapsKey"] as? String ?? ""
             slackAPIKey = dict["slackAPIKey"] as? String ?? ""
         }
+
+        // Load the known locations.
         if let path = Bundle.main.path(forResource: "Locations", ofType: "plist") {
             knownLocations = NSDictionary(contentsOfFile: path)
         }
@@ -66,8 +68,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
         }
         
         let location = locations[0]
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
+        var latitude = location.coordinate.latitude
+        var longitude = location.coordinate.longitude
         
         // Debug locations.
         // WeWork Waterloo

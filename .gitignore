@@ -27,3 +27,5 @@ DerivedData/
 *.app
 **/Keys.plist
 **/Locations.plist
+
+.DS_Store
