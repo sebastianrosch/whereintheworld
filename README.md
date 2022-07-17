@@ -1,6 +1,8 @@
 # WhereInTheWorld
 Update your Slack status with your current location
 
+![WhereInTheWorld in the MacOS Status Bar](/Docs/Assets/whereintheworld.png?raw=true)
+![Slack status showing the location from WhereInTheWorld](/Docs/Assets/slack.png?raw=true)
 
 # Usage
 
