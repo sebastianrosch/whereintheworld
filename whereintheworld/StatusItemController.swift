@@ -57,6 +57,9 @@ class StatusItemController {
         let lunchMenuItem = NSMenuItem(title: "🍕 Lunch (1h)", action: #selector(setLunch), keyEquivalent: "l")
         lunchMenuItem.target = self
         statusMenu.addItem(lunchMenuItem)
+        let vacationMenuItem = NSMenuItem(title: "🏝 Vacation (♾)", action: #selector(setVacation), keyEquivalent: "v")
+        vacationMenuItem.target = self
+        statusMenu.addItem(vacationMenuItem)
         
         self.toggleButton.target = self
         self.quitButton.target = self
@@ -71,10 +74,10 @@ class StatusItemController {
         statusItem.menu = statusBarMenu
         
         statusBarMenu.addItem(self.locationEntry)
-        statusBarMenu.addItem(self.toggleButton)
-        statusBarMenu.addItem(self.quitButton)
         statusBarMenu.addItem(self.statusMenuItem)
         statusBarMenu.setSubmenu(self.statusMenu, for: self.statusMenuItem)
+        statusBarMenu.addItem(self.toggleButton)
+        statusBarMenu.addItem(self.quitButton)
     }
     
     @objc func toggleActive() {
@@ -93,6 +96,10 @@ class StatusItemController {
     
     @objc func setLunch() {
         self.delegate?.setSlackStatus(statusText: "At lunch", withEmoji: ":pizza:", withExpiration: 3600)
+        
+    }
+    @objc func setVacation() {
+        self.delegate?.setSlackStatus(statusText: "On vacation", withEmoji: ":desert_island:", withExpiration: 0)
         
     }
     
