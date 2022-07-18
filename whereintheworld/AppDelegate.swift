@@ -20,6 +20,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
     var slackAPIKey : String = ""
     var knownLocations : NSDictionary?
     
+    let permanentStatus : NSArray = [":zoom:", ":pizza:"]
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Load the API keys.
         var keys: NSDictionary?
@@ -42,6 +44,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
         let delayInSeconds = 20.0
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
             self.manager.delegate = self
+            self.manager.desiredAccuracy = kCLLocationAccuracyBest
             self.manager.startUpdatingLocation()
         }
     }
@@ -225,74 +228,84 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                     emoji = ":flag-" + countryCode.lowercased() + ":"
                 }
                 
-                // Check the current Slack status before updating it.
-                var getStatusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.get")!)
-                getStatusRequest.httpMethod = "GET"
-                getStatusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                getStatusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
-
-                let session = URLSession.shared
-                let getStatusTask = session.dataTask(with: getStatusRequest, completionHandler: { data, response, error -> Void in
-                    do {
-                        if error != nil {
-                            print("error getting Slack status: \(String(describing: error))")
-                            return
-                        }
-                        
-                        // Read HTTP Response Status code
-                        if let response = response as? HTTPURLResponse {
-                            print("Response HTTP Status code: \(response.statusCode)")
-                        }
-                        
-                        print("retrieved Slack status")
-                        
-                        let decoder = JSONDecoder()
-                        
-                        do {
-                            let profile = try decoder.decode(ProfileWrapper.self, from: data!)
-                            
-                            // If in a Zoom call, do not update.
-                            if profile.profile?.status_emoji != ":zoom:" {
-                                
-                                let newStatus = ProfileWrapper(
-                                    profile: Profile(
-                                        status_text: location + ", " + country,
-                                        status_emoji: emoji,
-                                        status_expiration: 0))
-                                
-                                let jsonEncoder = JSONEncoder()
-                                let jsonData = try jsonEncoder.encode(newStatus)
-                                let json = String(data: jsonData, encoding: String.Encoding.utf8)
-                                
-                                var setStatusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.set")!)
-                                setStatusRequest.httpMethod = "POST"
-                                setStatusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                                setStatusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
-                                setStatusRequest.httpBody = json?.data(using: .utf8)
-
-                                let setStatusTask = session.dataTask(with: setStatusRequest, completionHandler: { data, response, error -> Void in
-                                    do {
-                                        if error != nil {
-                                            print("error updating Slack status: \(String(describing: error))")
-                                            return
-                                        }
-                                        print("updated Slack status")
-                                    }
-                                })
-
-                                setStatusTask.resume()
-                            }
-                        } catch {
-                            print("Response failed to decode")
-                        }
-                    }
-                })
+                self.setSlackStatus(statusText: location + ", " + country, withEmoji: emoji)
                 
-                getStatusTask.resume()
             }
         })
 
         task.resume()
+    }
+    
+    func setSlackStatus(statusText: String, withEmoji emoji: String, withExpiration expiration: Int = 0) {
+        // Check the current Slack status before updating it.
+        var getStatusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.get")!)
+        getStatusRequest.httpMethod = "GET"
+        getStatusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        getStatusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
+
+        let session = URLSession.shared
+        let getStatusTask = session.dataTask(with: getStatusRequest, completionHandler: { data, response, error -> Void in
+            do {
+                if error != nil {
+                    print("error getting Slack status: \(String(describing: error))")
+                    return
+                }
+                
+                // Read HTTP Response Status code
+                if let response = response as? HTTPURLResponse {
+                    print("Response HTTP Status code: \(response.statusCode)")
+                }
+                
+                print("retrieved Slack status")
+                
+                let decoder = JSONDecoder()
+                
+                do {
+                    let profile = try decoder.decode(ProfileWrapper.self, from: data!)
+                    
+                    // If in a Zoom call, do not update.
+                    if !self.permanentStatus.contains(profile.profile?.status_emoji ?? "") {
+                        
+                        var expirationEpoch = expiration
+                        if expiration != 0 {
+                             expirationEpoch = Int(NSDate().timeIntervalSince1970) + expiration
+                        }
+                        
+                        let newStatus = ProfileWrapper(
+                            profile: Profile(
+                                status_text: statusText,
+                                status_emoji: emoji,
+                                status_expiration: expirationEpoch))
+                        
+                        let jsonEncoder = JSONEncoder()
+                        let jsonData = try jsonEncoder.encode(newStatus)
+                        let json = String(data: jsonData, encoding: String.Encoding.utf8)
+                        
+                        var setStatusRequest = URLRequest(url: URL(string: "https://slack.com/api/users.profile.set")!)
+                        setStatusRequest.httpMethod = "POST"
+                        setStatusRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                        setStatusRequest.addValue(String(format: "Bearer %@", self.slackAPIKey), forHTTPHeaderField: "Authorization")
+                        setStatusRequest.httpBody = json?.data(using: .utf8)
+
+                        let setStatusTask = session.dataTask(with: setStatusRequest, completionHandler: { data, response, error -> Void in
+                            do {
+                                if error != nil {
+                                    print("error updating Slack status: \(String(describing: error))")
+                                    return
+                                }
+                                print("updated Slack status to " + statusText)
+                            }
+                        })
+
+                        setStatusTask.resume()
+                    }
+                } catch {
+                    print("Response failed to decode")
+                }
+            }
+        })
+        
+        getStatusTask.resume()
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
