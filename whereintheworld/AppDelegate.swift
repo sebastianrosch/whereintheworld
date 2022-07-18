@@ -68,13 +68,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
         }
         
         let location = locations[0]
-        var latitude = location.coordinate.latitude
-        var longitude = location.coordinate.longitude
-        
-        // Debug locations.
-        // WeWork Waterloo
-        // latitude = 51.5040783
-        // longitude = -0.1164418
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
         
         let url = String(format: "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%@", latitude, longitude, self.googleMapsKey)
         

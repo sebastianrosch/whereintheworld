@@ -22,15 +22,17 @@ If you don't want `WhereInTheWorld` to override your Slack status, you can simpl
 
 # Building and Installation
 
-1. Check out the source code and open the project in XCode.
-2. Rename `Keys_example.plist` to `Keys.plist`.
-3. Get a [Google Geocoding API token](https://developers.google.com/maps/documentation/geocoding/get-api-key).
-4. Get a Slack token for your user. [Create an application](https://api.slack.com/apps) and add `users.profile:read` and `users.profile:write` User Token scopes. Then copy the `User OAuth Token`.
-5. Provide both tokens in the `Keys.plist` dictionary.
-6. Rename `Locations_example.plist` to `Locations.plist`.
-7. Provide your known locations in the `Locations.plist` dictionary, such as home, office, etc. The `postcodePrefix` depends on the size and precision of your post code area. For example, `SE1` might be too large while `SE1 0LH` might be too narrow. The `type` can be `office`, `home`, `wework` or `airport`.
-8. Build and run the application.
-9. Click `Product` > `Archive`.
-10. In the folder that opens, right-click on the bundle and select `Show package contents`.
-11. Copy the `.app` file and `Info.plist` to a folder of your choice.
-12. Open MacOS Settings, select `Users & Groups`, then `Login Items`. Click `+` and select the `.app` file.
+1. Check out the source code and open the project in Finder.
+2. Rename `Locations_example.plist` to `Locations.plist`.
+3. Rename `Keys_example.plist` to `Keys.plist`.
+4. Now open the project in XCode.
+5. Get a [Google Geocoding API token](https://developers.google.com/maps/documentation/geocoding/get-api-key). Enable the Geocoding API and make sure to set up billing for your account (even though these APIs are free).
+6. Get a Slack token for your user. [Create an application](https://api.slack.com/apps) and add `users.profile:read` and `users.profile:write` User Token scopes. Then copy the `User OAuth Token`.
+7. Provide both tokens in the `Keys.plist` dictionary.
+8. Provide your known locations in the `Locations.plist` dictionary, such as home, office, etc. The `postcodePrefix` depends on the size and precision of your post code area. For example, `SE1` might be too large while `SE1 0LH` might be too narrow. The `type` can be `office`, `home`, `wework` or `airport`.
+9. Build and run the application.
+10. Click `Product` > `Archive`.
+11. In the folder that opens, right-click on the bundle and select `Show package contents`.
+12. Copy the `.app` file and `Info.plist` to a folder of your choice.
+13. Open MacOS Settings, select `Users & Groups`, then `Login Items`. Click `+` and select the `.app` file to make it start with MacOS.
+14. Allow the app access to your location.
