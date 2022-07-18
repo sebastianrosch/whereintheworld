@@ -7,9 +7,11 @@
 //
 
 import Cocoa
+import SwiftUI
 
 protocol StatusItemControllerDelegate {
     func locationTrackingToggled(active:Bool)
+    func setSlackStatus(statusText: String, withEmoji emoji: String, withExpiration expiration: Int)
 }
 
 class StatusItemController {
@@ -18,6 +20,10 @@ class StatusItemController {
     let locationEntry: NSMenuItem
     let toggleButton: NSMenuItem
     let quitButton: NSMenuItem
+    
+    let statusMenuItem: NSMenuItem
+    let statusMenu: NSMenu
+    
     var active: Bool
     
     var title: String {
@@ -46,6 +52,15 @@ class StatusItemController {
         self.toggleButton = NSMenuItem(title: "Pause", action: #selector(toggleActive), keyEquivalent: "p")
         self.quitButton = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
         
+        self.statusMenuItem = NSMenuItem(title: "Set status", action: nil, keyEquivalent: "s")
+        self.statusMenu = NSMenu(title: "Set status")
+        let lunchMenuItem = NSMenuItem(title: "🍕 Lunch (1h)", action: #selector(setLunch), keyEquivalent: "l")
+        lunchMenuItem.target = self
+        statusMenu.addItem(lunchMenuItem)
+        let vacationMenuItem = NSMenuItem(title: "🏝 Vacation (♾)", action: #selector(setVacation), keyEquivalent: "v")
+        vacationMenuItem.target = self
+        statusMenu.addItem(vacationMenuItem)
+        
         self.toggleButton.target = self
         self.quitButton.target = self
     }
@@ -59,6 +74,8 @@ class StatusItemController {
         statusItem.menu = statusBarMenu
         
         statusBarMenu.addItem(self.locationEntry)
+        statusBarMenu.addItem(self.statusMenuItem)
+        statusBarMenu.setSubmenu(self.statusMenu, for: self.statusMenuItem)
         statusBarMenu.addItem(self.toggleButton)
         statusBarMenu.addItem(self.quitButton)
     }
@@ -75,6 +92,15 @@ class StatusItemController {
             self.toggleButton.title = "Continue"
             self.toggleButton.keyEquivalent = "c"
         }
+    }
+    
+    @objc func setLunch() {
+        self.delegate?.setSlackStatus(statusText: "At lunch", withEmoji: ":pizza:", withExpiration: 3600)
+        
+    }
+    @objc func setVacation() {
+        self.delegate?.setSlackStatus(statusText: "On vacation", withEmoji: ":desert_island:", withExpiration: 0)
+        
     }
     
     @objc func quit() {
