@@ -60,6 +60,9 @@ class StatusItemController {
         let vacationMenuItem = NSMenuItem(title: "🏝 Vacation (♾)", action: #selector(setVacation), keyEquivalent: "v")
         vacationMenuItem.target = self
         statusMenu.addItem(vacationMenuItem)
+        let workshopMenuItem = NSMenuItem(title: "👏 Workshop (2h)", action: #selector(setWorkshop), keyEquivalent: "w")
+        workshopMenuItem.target = self
+        statusMenu.addItem(workshopMenuItem)
         
         self.toggleButton.target = self
         self.quitButton.target = self
@@ -100,6 +103,10 @@ class StatusItemController {
     }
     @objc func setVacation() {
         self.delegate?.setSlackStatus(statusText: "On vacation", withEmoji: ":desert_island:", withExpiration: 0)
+        
+    }
+    @objc func setWorkshop() {
+        self.delegate?.setSlackStatus(statusText: "In a workshop", withEmoji: ":clap:", withExpiration: 7200)
         
     }
     
