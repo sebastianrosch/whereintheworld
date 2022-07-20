@@ -9,6 +9,8 @@
 import Cocoa
 import SwiftUI
 import CoreLocation
+import CoreWLAN
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, StatusItemControllerDelegate {
@@ -70,6 +72,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
             return
         }
         
+        // Get current WifiSSID to add to location identifiers
+        let currentSSID = currentSSIDs()[0]
+        
         let location = locations[0]
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
@@ -114,8 +119,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                                     let name = knownLocation["name"] as? String ?? ""
                                     let postcodePrefix = knownLocation["postcodePrefix"] as? String ?? ""
                                     let type = knownLocation["type"] as? String ?? ""
+                                    let wifi = knownLocation["wifi"] as? String ?? ""
                                 
-                                    if component.shortName.starts(with: postcodePrefix) {
+                                    if component.shortName.starts(with: postcodePrefix) || currentSSID == wifi {
                                         location = name
                                         locationType = type
                                     }
@@ -199,6 +205,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 var fullLocation = ""
                 if locationType == "airport" {
                     fullLocation = "✈️ " + location + ", " + country
+                } else if locationType == "train" {
+                    fullLocation = "🚂 " + location + ", " + country
                 } else if locationType == "home" {
                     fullLocation = "🏠 " + location + ", " + country
                 } else if locationType == "office" || locationType == "wework" {
@@ -331,4 +339,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 print("unknown state: \(status)")
         }
     }
+    
+
+    func currentSSIDs() -> [String] {
+        let client = CWWiFiClient.shared()
+        return client.interfaces()?.flatMap { interface in
+            return interface.ssid()
+        } ?? []
+    }
+    
+    
 }
