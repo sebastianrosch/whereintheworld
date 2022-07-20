@@ -29,7 +29,7 @@ If you don't want `WhereInTheWorld` to override your Slack status, you can simpl
 5. Get a [Google Geocoding API token](https://developers.google.com/maps/documentation/geocoding/get-api-key). Enable the Geocoding API and make sure to set up billing for your account (even though these APIs are free).
 6. Get a Slack token for your user. [Create an application](https://api.slack.com/apps) and add `users.profile:read` and `users.profile:write` User Token scopes. Then copy the `User OAuth Token`.
 7. Provide both tokens in the `Keys.plist` dictionary.
-8. Provide your known locations in the `Locations.plist` dictionary, such as home, office, etc. The `postcodePrefix` depends on the size and precision of your post code area. For example, `SE1` might be too large while `SE1 0LH` might be too narrow. The `type` can be `office`, `home`, `wework` or `airport`.
+8. Provide your known locations in the `Locations.plist` dictionary, such as home, office, etc. The `postcodePrefix` depends on the size and precision of your post code area. For example, `SE1` might be too large while `SE1 0LH` might be too narrow. The `type` can be `office`, `home`, `wework`, `train` or `airport`. Wifi can be set alternatively to Postcode.
 9. Build and run the application.
 10. Click `Product` > `Archive`.
 11. In the folder that opens, right-click on the bundle and select `Show package contents`.

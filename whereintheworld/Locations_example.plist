@@ -4,6 +4,8 @@
 <dict>
 	<key>londonOffice</key>
 	<dict>
+		<key>wifi</key>
+		<string></string>
 		<key>postcodePrefix</key>
 		<string>E14</string>
 		<key>name</key>
@@ -13,6 +15,8 @@
 	</dict>
 	<key>sanfranciscoOffice</key>
 	<dict>
+		<key>wifi</key>
+		<string></string>
 		<key>postcodePrefix</key>
 		<string>9444</string>
 		<key>name</key>
@@ -22,6 +26,8 @@
 	</dict>
 	<key>home</key>
 	<dict>
+		<key>wifi</key>
+		<string></string>
 		<key>postcodePrefix</key>
 		<string>975</string>
 		<key>name</key>
