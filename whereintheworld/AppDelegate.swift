@@ -121,9 +121,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                                     let type = knownLocation["type"] as? String ?? ""
                                     let wifi = knownLocation["wifi"] as? String ?? ""
                                 
-                                    if component.shortName.starts(with: postcodePrefix) || currentSSID == wifi {
+                                    if (postcodePrefix != "" && component.shortName.starts(with: postcodePrefix)) || ( wifi != "" && currentSSID == wifi) {
                                         location = name
                                         locationType = type
+                                        break
                                     }
                                 }
                             }
@@ -223,6 +224,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                     emoji = ":airplane:"
                 } else if locationType == "home" {
                     emoji = ":house:"
+                } else if locationType == "train" {
+                    emoji = ":steam_locomotive:"
                 } else if locationType == "office" {
                     emoji = ":office:"
                 } else if locationType == "wework" {
