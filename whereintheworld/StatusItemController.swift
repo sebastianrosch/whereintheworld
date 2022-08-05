@@ -63,6 +63,9 @@ class StatusItemController {
         let workshopMenuItem = NSMenuItem(title: "👏 Workshop (2h)", action: #selector(setWorkshop), keyEquivalent: "w")
         workshopMenuItem.target = self
         statusMenu.addItem(workshopMenuItem)
+        let trainMenuItem = NSMenuItem(title: "🚄 Train (2h)", action: #selector(setWorkshop), keyEquivalent: "t")
+        trainMenuItem.target = self
+        statusMenu.addItem(trainMenuItem)
         
         self.toggleButton.target = self
         self.quitButton.target = self
@@ -99,15 +102,15 @@ class StatusItemController {
     
     @objc func setLunch() {
         self.delegate?.setSlackStatus(statusText: "At lunch", withEmoji: ":pizza:", withExpiration: 3600)
-        
     }
     @objc func setVacation() {
         self.delegate?.setSlackStatus(statusText: "On vacation", withEmoji: ":desert_island:", withExpiration: 0)
-        
     }
     @objc func setWorkshop() {
         self.delegate?.setSlackStatus(statusText: "In a workshop", withEmoji: ":clap:", withExpiration: 7200)
-        
+    }
+    @objc func setTrain() {
+        self.delegate?.setSlackStatus(statusText: "On a train", withEmoji: ":clap:", withExpiration: 7200)
     }
     
     @objc func quit() {
