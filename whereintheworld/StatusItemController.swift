@@ -57,13 +57,17 @@ class StatusItemController {
         let lunchMenuItem = NSMenuItem(title: "🍕 Lunch (1h)", action: #selector(setLunch), keyEquivalent: "l")
         lunchMenuItem.target = self
         statusMenu.addItem(lunchMenuItem)
-        let vacationMenuItem = NSMenuItem(title: "🏝 Vacation (♾)", action: #selector(setVacation), keyEquivalent: "v")
-        vacationMenuItem.target = self
-        statusMenu.addItem(vacationMenuItem)
+        let offlineMeetingMenuItem = NSMenuItem(title: "🧑‍🤝‍🧑 Offline Meeting (1h)", action: #selector(setMeeting), keyEquivalent: "m")
+        offlineMeetingMenuItem.target = self
+        statusMenu.addItem(offlineMeetingMenuItem)
         let workshopMenuItem = NSMenuItem(title: "👏 Workshop (2h)", action: #selector(setWorkshop), keyEquivalent: "w")
         workshopMenuItem.target = self
         statusMenu.addItem(workshopMenuItem)
+        let vacationMenuItem = NSMenuItem(title: "🏝 Vacation (♾)", action: #selector(setVacation), keyEquivalent: "v")
+        vacationMenuItem.target = self
+        statusMenu.addItem(vacationMenuItem)
         
+    
         self.toggleButton.target = self
         self.quitButton.target = self
     }
@@ -98,15 +102,39 @@ class StatusItemController {
     }
     
     @objc func setLunch() {
-        self.delegate?.setSlackStatus(statusText: "At lunch", withEmoji: ":pizza:", withExpiration: 3600)
+        let locationString = "At lunch"
+        let emojiString = ":pizza:"
+        let emoji = "🍕"
+        let expirationSeconds = 3600
+        self.delegate?.setSlackStatus(statusText: locationString, withEmoji: emojiString, withExpiration: expirationSeconds)
+        self.location = emoji + " " + locationString
         
     }
     @objc func setVacation() {
-        self.delegate?.setSlackStatus(statusText: "On vacation", withEmoji: ":desert_island:", withExpiration: 0)
+        let locationString = "On vacation"
+        let emojiString = ":desert_island:"
+        let emoji = "🏝"
+        let expirationSeconds = 0
+        self.delegate?.setSlackStatus(statusText: locationString, withEmoji: emojiString, withExpiration: expirationSeconds)
+        self.location = emoji + " " + locationString
         
     }
     @objc func setWorkshop() {
-        self.delegate?.setSlackStatus(statusText: "In a workshop", withEmoji: ":clap:", withExpiration: 7200)
+        let locationString = "In a workshop"
+        let emojiString = ":clap:"
+        let emoji = "👏"
+        let expirationSeconds = 7200
+        self.delegate?.setSlackStatus(statusText: locationString, withEmoji: emojiString, withExpiration: expirationSeconds)
+        self.location = emoji + " " + locationString
+        
+    }
+    @objc func setMeeting() {
+        let locationString = "In an offline meeting"
+        let emojiString = ":people_holding_hands:"
+        let emoji = "🧑‍🤝‍🧑"
+        let expirationSeconds = 3600
+        self.delegate?.setSlackStatus(statusText: locationString, withEmoji: emojiString, withExpiration: expirationSeconds)
+        self.location = emoji + " " + locationString
         
     }
     

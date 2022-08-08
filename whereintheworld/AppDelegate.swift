@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
     var slackAPIKey : String = ""
     var knownLocations : NSDictionary?
     
-    let permanentStatus : NSArray = [":zoom:", ":pizza:", ":desert_island:", ":clap:"]
+    let permanentStatus : NSArray = [":zoom:", ":pizza:", ":desert_island:", ":clap:", ":people_holding_hands:"]
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Load the API keys.
@@ -201,23 +201,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 if country == "United Kingdom" {
                     country = "UK"
                 }
-                
-                // Build the location name.
-                var fullLocation = ""
-                if locationType == "airport" {
-                    fullLocation = "✈️ " + location + ", " + country
-                } else if locationType == "train" {
-                    fullLocation = "🚂 " + location + ", " + country
-                } else if locationType == "home" {
-                    fullLocation = "🏠 " + location + ", " + country
-                } else if locationType == "office" || locationType == "wework" {
-                    fullLocation = "🏢 " + location + ", " + country
-                } else {
-                    fullLocation = location + ", " + country
-                }
-                self.statusItemController.location = fullLocation
-                print(fullLocation)
-                
+                                
                 // Build the emoji.
                 var emoji = ":earth_africa:"
                 if locationType == "airport" {
@@ -235,11 +219,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 }
                 
                 self.setSlackStatus(statusText: location + ", " + country, withEmoji: emoji)
-                
+                self.setMenuStatus(location: location, withLocationType: locationType, withCountry: country)
+
             }
         })
 
         task.resume()
+    }
+    
+    func setMenuStatus(location: String, withLocationType locationType: String, withCountry country: String) {
+        // Build the location name.
+        var fullLocation = ""
+        if locationType == "airport" {
+            fullLocation = "✈️ " + location + ", " + country
+        } else if locationType == "train" {
+            fullLocation = "🚂 " + location + ", " + country
+        } else if locationType == "home" {
+            fullLocation = "🏠 " + location + ", " + country
+        } else if locationType == "office" || locationType == "wework" {
+            fullLocation = "🏢 " + location + ", " + country
+        } else {
+            fullLocation = location + ", " + country
+        }
+        self.statusItemController.location = fullLocation
+        print(fullLocation)
     }
     
     func setSlackStatus(statusText: String, withEmoji emoji: String, withExpiration expiration: Int = 0) {
