@@ -73,7 +73,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
         }
         
         // Get current WifiSSID to add to location identifiers
-        let currentSSID = currentSSIDs()[0]
+        let currentSSIDs = currentSSIDs()
+        var currentSSID = ""
+        if currentSSIDs.count > 0 {
+            currentSSID = currentSSIDs[0]
+        }
         
         let location = locations[0]
         let latitude = location.coordinate.latitude
