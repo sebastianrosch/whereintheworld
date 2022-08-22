@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
     var slackAPIKey : String = ""
     var knownLocations : NSDictionary?
     
-    let permanentStatus : NSArray = [":zoom:", ":pizza:", ":desert_island:", ":clap:", ":people_holding_hands:"]
+    let permanentStatus : NSArray = [":zoom:", ":pizza:", ":desert_island:", ":clap:", ":people_holding_hands:", ":face_with_thermometer:"]
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Load the API keys.

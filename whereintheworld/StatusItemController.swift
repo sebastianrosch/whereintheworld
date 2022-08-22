@@ -113,6 +113,9 @@ class StatusItemController {
     @objc func setTrain() {
         self.delegate?.setSlackStatus(statusText: "On a train", withEmoji: ":clap:", withExpiration: 7200)
     }
+    @objc func setMeeting() {
+        self.delegate?.setSlackStatus(statusText: "In a meeting", withEmoji: ":people_holding_hands:", withExpiration: 3600)
+    }
     
     @objc func quit() {
         NSApplication.shared.terminate(self)
