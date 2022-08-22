@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
     var slackAPIKey : String = ""
     var knownLocations : NSDictionary?
     
-    let permanentStatus : NSArray = [":zoom:", ":pizza:", ":desert_island:", ":clap:", ":people_holding_hands:"]
+    let permanentStatus : NSArray = [":zoom:", ":around:", ":pizza:", ":desert_island:", ":clap:", ":people_holding_hands:"]
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Load the API keys.
@@ -276,7 +276,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 do {
                     let profile = try decoder.decode(ProfileWrapper.self, from: data!)
                     
-                    // If in a Zoom call, do not update.
+                    // If in a permanent status, do not update.
                     if !self.permanentStatus.contains(profile.profile?.status_emoji ?? "") {
                         
                         var expirationEpoch = expiration
