@@ -1,0 +1,31 @@
+{
+    "keys": {
+        "googleMapsKey": "XXXX",
+        "slackApiKey": "xoxp-XXXX"
+    },
+    "locations": [
+        {
+            "name": "Hamburg Office",
+            "type": "office",
+            "postcodePrefix": "20459"
+        },
+        {
+            "name": "Home, London",
+            "type": "home",
+            "postcodePrefix": "SW8"
+        },
+        {
+            "name": "On a train",
+            "type": "train",
+            "wifi": "Wifi on ICE"
+        }
+    ],
+    "permanentStatusIcons": [
+        ":zoom:",
+        ":around:",
+        ":pizza:",
+        ":desert_island:",
+        ":clap:",
+        ":people_holding_hands:"
+    ]
+}

@@ -28,4 +28,7 @@ DerivedData/
 **/Keys.plist
 **/Locations.plist
 
+## custom
+config-local.json
+
 .DS_Store

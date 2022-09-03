@@ -20,24 +20,61 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
     
     var googleMapsKey : String = ""
     var slackAPIKey : String = ""
-    var knownLocations : NSDictionary?
     
-    let permanentStatus : NSArray = [":zoom:", ":around:", ":pizza:", ":desert_island:", ":clap:", ":people_holding_hands:"]
+    var knownLocations : [Location] = []
+    var permanentStatusIcons : [String] = []
     
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Load the API keys.
-        var keys: NSDictionary?
-        if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
-            keys = NSDictionary(contentsOfFile: path)
-        }
-        if let dict = keys {
-            googleMapsKey = dict["googleMapsKey"] as? String ?? ""
-            slackAPIKey = dict["slackAPIKey"] as? String ?? ""
+    struct Config : Codable {
+        let keys: Keys
+        let permanentStatusIcons: [String]?
+        let locations: [Location]?
+    }
+    
+    struct Keys : Codable {
+        let googleMapsKey: String
+        let slackApiKey: String
+    }
+    
+    struct Location : Codable {
+        let name: String?
+        let postcodePrefix: String?
+        let type: String?
+        let wifi: String?
+    }
+    
+    func loadConfig() -> Config? {
+        let decoder = JSONDecoder()
+        
+        do {
+            var configFileName = "config"
+
+#if DEBUG
+            configFileName = "config-local"
+#endif
+            
+            let url = Bundle.main.url(forResource: configFileName, withExtension: "json")
+            let data = try Data(contentsOf: url!)
+            let config = try decoder.decode(Config.self, from: data)
+            return config
+        } catch {
+            print("Unexpected error: \(error).")
         }
 
-        // Load the known locations.
-        if let path = Bundle.main.path(forResource: "Locations", ofType: "plist") {
-            knownLocations = NSDictionary(contentsOfFile: path)
+       return nil
+    }
+    
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Load the config.
+        let config = loadConfig()
+        if config != nil {
+            googleMapsKey = config?.keys.googleMapsKey ?? ""
+            slackAPIKey = config?.keys.slackApiKey ?? ""
+            knownLocations = config?.locations ?? []
+            permanentStatusIcons = config?.permanentStatusIcons ?? []
+            print("config loaded")
+        } else {
+            print("failed to load config")
+            return
         }
         
         print(DarkMode.isEnabled)
@@ -114,27 +151,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                 }
 
                 // First pass trying to identify known locations.
-                if self.knownLocations != nil {
-                    for address in addressDetails!.results {
-                        for component in address.addressComponents {
-                            if component.types.contains("postal_code") {
-                                for (_, dict) in self.knownLocations! {
-                                    let knownLocation = dict as! NSDictionary
-                                    let name = knownLocation["name"] as? String ?? ""
-                                    let postcodePrefix = knownLocation["postcodePrefix"] as? String ?? ""
-                                    let type = knownLocation["type"] as? String ?? ""
-                                    let wifi = knownLocation["wifi"] as? String ?? ""
+                for address in addressDetails!.results {
+                    for component in address.addressComponents {
+                        if component.types.contains("postal_code") {
+                            for loc in self.knownLocations {
+                                if let postcodePrefix = loc.postcodePrefix {
+                                    if postcodePrefix != "" && component.shortName.starts(with: postcodePrefix) {
+                                        location = loc.name ?? ""
+                                        locationType = loc.type ?? ""
+                                        break
+                                    }
+                                }
                                 
-                                    if (postcodePrefix != "" && component.shortName.starts(with: postcodePrefix)) || ( wifi != "" && currentSSID == wifi) {
-                                        location = name
-                                        locationType = type
+                                if let wifi = loc.wifi {
+                                    if wifi != "" && currentSSID == wifi {
+                                        location = loc.name ?? ""
+                                        locationType = loc.type ?? ""
                                         break
                                     }
                                 }
                             }
-                            if component.types.contains("country") {
-                                country = component.longName
-                            }
+                        }
+                        if component.types.contains("country") {
+                            country = component.longName
                         }
                     }
                 }
@@ -277,7 +316,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate, S
                     let profile = try decoder.decode(ProfileWrapper.self, from: data!)
                     
                     // If in a permanent status, do not update.
-                    if !self.permanentStatus.contains(profile.profile?.status_emoji ?? "") {
+                    if !self.permanentStatusIcons.contains(profile.profile?.status_emoji ?? "") {
                         
                         var expirationEpoch = expiration
                         if expiration != 0 {

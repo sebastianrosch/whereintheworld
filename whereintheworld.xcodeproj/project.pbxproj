@@ -16,8 +16,7 @@
 		9EC45D8E23F308A10060C845 /* DarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC45D8D23F308A10060C845 /* DarkMode.swift */; };
 		9EC45D9123F313590060C845 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EC45D9023F313590060C845 /* CoreLocation.framework */; };
 		9EC45D9423F325AD0060C845 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EC45D9223F324750060C845 /* MapKit.framework */; };
-		9EDF9433241FD32100F01A67 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EDF9432241FD32100F01A67 /* Keys.plist */; };
-		9EDF9439241FDFF000F01A67 /* Locations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EDF9438241FDFF000F01A67 /* Locations.plist */; };
+		9EE2FD4B28B935FD00548058 /* config-local.json in Resources */ = {isa = PBXBuildFile; fileRef = 9EE2FD4A28B935FD00548058 /* config-local.json */; };
 		9EE6A43C27B5BB0900DE25B7 /* SlackModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,8 +33,7 @@
 		9EC45D8D23F308A10060C845 /* DarkMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkMode.swift; sourceTree = "<group>"; };
 		9EC45D9023F313590060C845 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9EC45D9223F324750060C845 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		9EDF9432241FD32100F01A67 /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
-		9EDF9438241FDFF000F01A67 /* Locations.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Locations.plist; sourceTree = "<group>"; };
+		9EE2FD4A28B935FD00548058 /* config-local.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "config-local.json"; sourceTree = "<group>"; };
 		9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,15 +70,14 @@
 		9EC45D7723F307330060C845 /* whereintheworld */ = {
 			isa = PBXGroup;
 			children = (
+				9EE2FD4A28B935FD00548058 /* config-local.json */,
 				9EC45D7823F307330060C845 /* AppDelegate.swift */,
-				9EDF9438241FDFF000F01A67 /* Locations.plist */,
 				9EA1E19C23F5E663003C0C42 /* Model.swift */,
 				9EC45D8D23F308A10060C845 /* DarkMode.swift */,
 				9EC45D8B23F307F00060C845 /* StatusItemController.swift */,
 				9EC45D7C23F307360060C845 /* Assets.xcassets */,
 				9EC45D8123F307360060C845 /* Main.storyboard */,
 				9EC45D8423F307360060C845 /* Info.plist */,
-				9EDF9432241FD32100F01A67 /* Keys.plist */,
 				9EC45D8523F307360060C845 /* whereintheworld.entitlements */,
 				9EC45D7E23F307360060C845 /* Preview Content */,
 				9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */,
@@ -163,11 +160,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EDF9433241FD32100F01A67 /* Keys.plist in Resources */,
 				9EC45D8323F307360060C845 /* Main.storyboard in Resources */,
-				9EDF9439241FDFF000F01A67 /* Locations.plist in Resources */,
 				9EC45D8023F307360060C845 /* Preview Assets.xcassets in Resources */,
 				9EC45D7D23F307360060C845 /* Assets.xcassets in Resources */,
+				9EE2FD4B28B935FD00548058 /* config-local.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
