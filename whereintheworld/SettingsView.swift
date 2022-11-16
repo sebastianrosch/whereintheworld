@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-protocol ConfigViewDelegate {
-    func configChanged()
+protocol SettingsViewDelegate {
+    func settingsChanged()
 }
 
-struct ConfigView: View {
-    private var delegate:ConfigViewDelegate?
+struct SettingsView: View {
+    private var delegate:SettingsViewDelegate?
     @State private var googleApiKey: String = ""
     @State private var slackApiKey: String = ""
     
-    init(delegate:ConfigViewDelegate?) {
+    init(delegate:SettingsViewDelegate?) {
         self.delegate = delegate
     }
     
@@ -38,7 +38,7 @@ struct ConfigView: View {
         }
     }
     
-    func saveConfig() {
+    func saveSettings() {
         print("saving settings")
         
         let defaults = UserDefaults.standard
@@ -46,16 +46,16 @@ struct ConfigView: View {
         defaults.set(googleApiKey, forKey: DefaultsKeys.googleApiKey)
         defaults.set(slackApiKey, forKey: DefaultsKeys.slackApiKey)
         
-        self.delegate?.configChanged()
+        self.delegate?.settingsChanged()
     }
     
-    func clearConfig() {
+    func clearSettings() {
         print("clearing settings")
         
         googleApiKey = ""
         slackApiKey = ""
         
-        saveConfig()
+        saveSettings()
     }
 
     var body: some View {
@@ -68,12 +68,16 @@ struct ConfigView: View {
             Form {
                 SecureInputView("Google Maps API Key", text: $googleApiKey)
                 SecureInputView("Slack API Key", text: $slackApiKey)
-                Button("Save") {
-                    saveConfig()
-                }
+            }
+            HStack {
                 Button("Clear") {
-                    clearConfig()
+                    clearSettings()
                 }
+                Button("Save") {
+                    saveSettings()
+                }
+                .buttonStyle(.borderedProminent)
+                    .tint(.accentColor)
             }
         }
         .onAppear(perform: loadSettings)
@@ -81,9 +85,9 @@ struct ConfigView: View {
     }
 }
 
-struct ConfigView_Previews: PreviewProvider {
+struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigView(delegate: nil)
+        SettingsView(delegate: nil)
     }
 }
 

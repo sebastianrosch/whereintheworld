@@ -13,12 +13,12 @@ struct whereintheworldApp: App {
 
     var body: some Scene {
         Settings {
-            ConfigView(delegate: appDelegate)
+            SettingsView(delegate: appDelegate)
         }
     }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate, LocationControllerDelegate, ConfigViewDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate, LocationControllerDelegate, SettingsViewDelegate {
     private var statusItemController: StatusItemController!
     private var locationController: LocationController!
     private var slackController: SlackController!
@@ -79,7 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         settings.isReleasedWhenClosed = false
 
         // Lets us use SwiftUI viws with AppKit
-        settings.contentView = NSHostingView(rootView: ConfigView(delegate: self))
+        settings.contentView = NSHostingView(rootView: SettingsView(delegate: self))
 
         // Center and bring forward
         settings.center()
@@ -99,11 +99,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         statusItemController?.setLocation(location: location)
     }
     
-    func configChanged() {
-        loadConfig()
+    func settingsChanged() {
+        loadSettings()
     }
     
-    func loadConfig() {
+    func loadSettings() {
         let defaults = UserDefaults.standard
         var googleApiKey = ""
         var slackApiKey = ""
