@@ -10,6 +10,7 @@ import SwiftUI
 
 protocol StatusItemControllerDelegate {
     func locationTrackingToggled(active:Bool)
+    func openSettings()
     func setSlackStatus(statusText: String, withEmoji emoji: String, withExpiration expiration: Int)
 }
 
@@ -108,7 +109,7 @@ class StatusItemController {
     }
     
     @objc private func openSettings() {
-        OpenWindows.SettingsWindow.open()
+        self.delegate?.openSettings()
     }
     
     @objc private func quit() {

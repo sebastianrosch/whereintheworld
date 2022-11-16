@@ -2,7 +2,7 @@
 //  whereintheworldApp.swift
 //  whereintheworld
 //
-//  Created by Sebastian Rosch on 20/09/2022.
+//  Created by Sebastian Rosch on 14/11/2022.
 //
 
 import SwiftUI
@@ -12,10 +12,6 @@ struct whereintheworldApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        WindowGroup("Settings") {
-            ConfigView(delegate: appDelegate).handlesExternalEvents(preferring: Set(arrayLiteral: "SettingsWindow"), allowing: Set(arrayLiteral: "SettingsWindow"))
-        }.handlesExternalEvents(matching: Set(arrayLiteral: "SettingsWindow"))
-        
         Settings {
             ConfigView(delegate: appDelegate)
         }
@@ -49,6 +45,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         
         if googleApiKey == "" || slackApiKey == "" {
             OpenWindows.SettingsWindow.open()
+        } else {
+            NSApplication.shared.keyWindow?.close()
         }
         
         statusItemController = StatusItemController()
@@ -61,6 +59,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         }
         
         slackController = SlackController(slackApiKey: slackApiKey)
+    }
+    
+    func openSettings() {
+        // Get focus from other apps
+        NSApplication.shared.activate(ignoringOtherApps: true)
+
+        // Create the frame to draw window
+        let settings = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 640, height: 480),
+            styleMask: [.titled, .closable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        // Add title
+        settings.title = "Settings"
+
+        // Keeps window reference active, we need to use this when using NSHostingView
+        settings.isReleasedWhenClosed = false
+
+        // Lets us use SwiftUI viws with AppKit
+        settings.contentView = NSHostingView(rootView: ConfigView(delegate: self))
+
+        // Center and bring forward
+        settings.center()
+        settings.makeKeyAndOrderFront(nil)
     }
     
     func locationTrackingToggled(active: Bool) {
