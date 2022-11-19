@@ -18,6 +18,10 @@
 		9E2ECB492922CE2C00DF408D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E2ECB482922CE2C00DF408D /* MapKit.framework */; };
 		9E2ECB552923D07400DF408D /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB542923D07400DF408D /* LocationController.swift */; };
 		9E2ECB572924CCDE00DF408D /* SlackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB562924CCDE00DF408D /* SlackController.swift */; };
+		9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB582924EFC400DF408D /* SecretsView.swift */; };
+		9E2ECB5B2924F3B500DF408D /* SlackStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5A2924F3B500DF408D /* SlackStatusView.swift */; };
+		9E2ECB5E292972BF00DF408D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5D292972BF00DF408D /* Constants.swift */; };
+		9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +39,10 @@
 		9E2ECB482922CE2C00DF408D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9E2ECB542923D07400DF408D /* LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
 		9E2ECB562924CCDE00DF408D /* SlackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackController.swift; sourceTree = "<group>"; };
+		9E2ECB582924EFC400DF408D /* SecretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsView.swift; sourceTree = "<group>"; };
+		9E2ECB5A2924F3B500DF408D /* SlackStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusView.swift; sourceTree = "<group>"; };
+		9E2ECB5D292972BF00DF408D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,12 +78,16 @@
 		9E2EC00328DA58B700F5CCD5 /* whereintheworld */ = {
 			isa = PBXGroup;
 			children = (
+				9E2ECB5C292972AD00DF408D /* Utils */,
 				9E2ECB442922CE1E00DF408D /* Info.plist */,
 				9E2ECB3D2922CC9400DF408D /* Models */,
 				9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */,
 				9E2ECB542923D07400DF408D /* LocationController.swift */,
 				9E2ECB562924CCDE00DF408D /* SlackController.swift */,
 				9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */,
+				9E2ECB582924EFC400DF408D /* SecretsView.swift */,
+				9E2ECB5A2924F3B500DF408D /* SlackStatusView.swift */,
+				9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */,
 				9E2ECB422922CCFD00DF408D /* StatusItemController.swift */,
 				9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */,
 				9E2EC00D28DA58B800F5CCD5 /* whereintheworld.entitlements */,
@@ -108,6 +120,14 @@
 				9E2ECB462922CE2600DF408D /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9E2ECB5C292972AD00DF408D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9E2ECB5D292972BF00DF408D /* Constants.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,9 +200,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */,
 				9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */,
+				9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */,
 				9E2ECB412922CCBE00DF408D /* GoogleMaps.swift in Sources */,
 				9E2ECB432922CCFD00DF408D /* StatusItemController.swift in Sources */,
+				9E2ECB5B2924F3B500DF408D /* SlackStatusView.swift in Sources */,
+				9E2ECB5E292972BF00DF408D /* Constants.swift in Sources */,
 				9E2ECB572924CCDE00DF408D /* SlackController.swift in Sources */,
 				9E2ECB3F2922CCA200DF408D /* Slack.swift in Sources */,
 				9E2ECB552923D07400DF408D /* LocationController.swift in Sources */,

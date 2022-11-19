@@ -42,14 +42,45 @@ class StatusItemController {
         let quitButton = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
         quitButton.target = self
         
-        // Set Slack Status
-        let manualStatusItems = [
-            ManualStatusItem(title: "🍕 Lunch (1h)", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600),
-            ManualStatusItem(title: "🧑‍🤝‍🧑 Offline Meeting (1h)", keyEquivalent: "m", slackStatusText: "In a meeting", slackEmoji: ":people_holding_hands:", slackExpiration: 3600),
-            ManualStatusItem(title: "👏 Workshop (2h)", keyEquivalent: "w", slackStatusText: "In a workshop", slackEmoji: ":clap:", slackExpiration: 7200),
-            ManualStatusItem(title: "🚄 Train (2h)", keyEquivalent: "t", slackStatusText: "In a train", slackEmoji: ":bullettrain_side:", slackExpiration: 7200),
-            ManualStatusItem(title: "🏝️ On vacation", keyEquivalent: "v", slackStatusText: "On vacation", slackEmoji: ":desert_island:", slackExpiration: 0)
-        ]
+        var manualStatusItems: [ManualStatusItem] = []
+        
+        if let data = UserDefaults.standard.data(forKey: DefaultsKeys.slackStatusItemsKey) {
+            do {
+                // Create JSON Decoder
+                let decoder = JSONDecoder()
+
+                // Decode Note
+                let statusItems = try decoder.decode([ManualStatusItem].self, from: data)
+                manualStatusItems = statusItems
+            } catch {
+                print("Unable to decode Slack Status menu items (\(error))")
+            }
+        }
+        
+        if (manualStatusItems.count <= 0) {
+            // Set default Slack Status items.
+            let manualStatusItems = [
+                ManualStatusItem(id: 1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600),
+                ManualStatusItem(id: 2, title: "🧑‍🤝‍🧑 Offline Meeting", keyEquivalent: "m", slackStatusText: "In a meeting", slackEmoji: ":people_holding_hands:", slackExpiration: 3600),
+                ManualStatusItem(id: 3, title: "👏 Workshop", keyEquivalent: "w", slackStatusText: "In a workshop", slackEmoji: ":clap:", slackExpiration: 7200),
+                ManualStatusItem(id: 4, title: "🚄 Train", keyEquivalent: "t", slackStatusText: "In a train", slackEmoji: ":bullettrain_side:", slackExpiration: 7200),
+                ManualStatusItem(id: 5, title: "🏝️ On vacation", keyEquivalent: "v", slackStatusText: "On vacation", slackEmoji: ":desert_island:", slackExpiration: 0)
+            ]
+            
+            do {
+                // Create JSON Encoder
+                let encoder = JSONEncoder()
+    
+                // Encode Note
+                let data = try encoder.encode(manualStatusItems)
+    
+                // Write/Set Data
+                UserDefaults.standard.set(data, forKey: DefaultsKeys.slackStatusItemsKey)
+    
+            } catch {
+                print("Unable to encode Slack Status menu items (\(error))")
+            }
+        }
         
         let setSlackStatusMenuItem = NSMenuItem(title: "Set Slack Status", action: nil, keyEquivalent: "s")
         let setSlackStatusMenu = NSMenu(title: "Set Slack Status")
@@ -121,10 +152,54 @@ class StatusItemController {
     }
 }
 
-struct ManualStatusItem: Codable {
-    let title: String
-    let keyEquivalent: String
-    let slackStatusText: String
-    let slackEmoji: String
-    let slackExpiration: Int
+struct ManualStatusItem: Codable, Identifiable {
+    let id: Int
+    var title: String
+    var keyEquivalent: String
+    var slackStatusText: String
+    var slackEmoji: String
+    var slackExpiration: Int
+    
+    var slackExpirationForUI: String {
+        get {
+            switch slackExpiration {
+            case 0:
+                return "never"
+            case 900:
+                return "15 minutes"
+            case 1800:
+                return "30 minutes"
+            case 3600:
+                return "1 hour"
+            case 7200:
+                return "2 hours"
+            case 14400:
+                return "4 hours"
+            case 28800:
+                return "8 hours"
+            default:
+                return "never"
+            }
+        }
+        set {
+            switch newValue {
+            case "never":
+                slackExpiration = 0
+            case "15 minutes":
+                slackExpiration = 900
+            case "30 minutes":
+                slackExpiration = 1800
+            case "1 hour":
+                slackExpiration = 3600
+            case "2 hours":
+                slackExpiration = 7200
+            case "4 hours":
+                slackExpiration = 14400
+            case "8 hours":
+                slackExpiration = 28800
+            default:
+                slackExpiration = 0
+            }
+        }
+    }
 }

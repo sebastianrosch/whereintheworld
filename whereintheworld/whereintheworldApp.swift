@@ -43,11 +43,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
             slackApiKey = slackApiKeyVal
         }
         
-        if googleApiKey == "" || slackApiKey == "" {
-            OpenWindows.SettingsWindow.open()
-        } else {
-            NSApplication.shared.keyWindow?.close()
-        }
+//        if googleApiKey == "" || slackApiKey == "" {
+            openSettings()
+//        } else {
+//            NSApplication.shared.keyWindow?.close()
+//        }
         
         statusItemController = StatusItemController()
         statusItemController.setDelegate(delegate: self)
