@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         var slackApiKey = ""
         var knownLocations:[KnownLocation] = []
         var manualSlackStatuses:[String] = []
-        var permanentSlackStatusIcons:[String] = [":zoom:",":around:"]
+        let permanentSlackStatusIcons:[String] = [":zoom:",":around:"]
         
         if let googleApiKeyVal = defaults.string(forKey: DefaultsKeys.googleApiKey) {
             googleApiKey = googleApiKeyVal
