@@ -35,12 +35,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         let defaults = UserDefaults.standard
         var googleApiKey = ""
         var slackApiKey = ""
+        var knownLocations:[KnownLocation] = []
+        var manualSlackStatuses:[String] = []
+        var permanentSlackStatusIcons:[String] = [":zoom:",":around:"]
         
         if let googleApiKeyVal = defaults.string(forKey: DefaultsKeys.googleApiKey) {
             googleApiKey = googleApiKeyVal
         }
         if let slackApiKeyVal = defaults.string(forKey: DefaultsKeys.slackApiKey) {
             slackApiKey = slackApiKeyVal
+        }
+        if let knownLocationsVal = UserDefaults.standard.data(forKey: DefaultsKeys.knownLocationsKey) {
+            do {
+                // Create JSON Decoder
+                let decoder = JSONDecoder()
+
+                // Decode Note
+                let knownLocation = try decoder.decode([KnownLocation].self, from: knownLocationsVal)
+                knownLocations = knownLocation
+            } catch {
+                print("Unable to decode known locations (\(error))")
+            }
+        }
+        if let manualSlackStatusesVal = UserDefaults.standard.data(forKey: DefaultsKeys.slackStatusItemsKey) {
+            do {
+                // Create JSON Decoder
+                let decoder = JSONDecoder()
+
+                // Decode Note
+                let slackStatus = try decoder.decode([ManualSlackStatusItem].self, from: manualSlackStatusesVal)
+                slackStatus.forEach { item in
+                    manualSlackStatuses.append(item.slackStatusText)
+                }
+            } catch {
+                print("Unable to decode Slack Status items (\(error))")
+            }
         }
         
 //        if googleApiKey == "" || slackApiKey == "" {
@@ -54,11 +83,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         statusItemController.setLocation(location: "Loading...")
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            self.locationController = LocationController(googleApiKey: googleApiKey)
+            self.locationController = LocationController(googleApiKey: googleApiKey,
+                                                         knownLocations: knownLocations)
             self.locationController.setDelegate(delegate: self)
         }
         
-        slackController = SlackController(slackApiKey: slackApiKey)
+        slackController = SlackController(slackApiKey: slackApiKey,
+                                          permanentStatusIcons: permanentSlackStatusIcons,
+                                          permanentStatuses: manualSlackStatuses)
     }
     
     func openSettings() {

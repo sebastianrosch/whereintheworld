@@ -9,11 +9,14 @@ import Foundation
 
 
 class SlackController {
-    private var slackApiKey : String = ""
-    private var permanentStatusIcons : [String] = [String]()
+    private var slackApiKey:String = ""
+    private var permanentStatusIcons:[String] = []
+    private var permanentStatuses:[String] = []
     
-    init(slackApiKey: String) {
+    init(slackApiKey: String, permanentStatusIcons:[String], permanentStatuses:[String]) {
         self.slackApiKey = slackApiKey
+        self.permanentStatusIcons = permanentStatusIcons
+        self.permanentStatuses = permanentStatuses
     }
     
     func setSlackApiKey(slackApiKey: String){
@@ -48,7 +51,8 @@ class SlackController {
                     let profile = try decoder.decode(ProfileWrapper.self, from: data!)
                     
                     // If in a permanent status, do not update.
-                    if !self.permanentStatusIcons.contains(profile.profile?.status_emoji ?? "") {
+                    if !self.permanentStatusIcons.contains(profile.profile?.status_emoji ?? "") &&
+                        !self.permanentStatuses.contains(profile.profile?.status_text ?? ""){
                         
                         var expirationEpoch = expiration
                         if expiration != 0 {

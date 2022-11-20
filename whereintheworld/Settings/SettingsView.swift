@@ -33,10 +33,15 @@ struct SettingsView: View {
                         Label("Credentials", systemImage: "lock.rectangle")
                         Text("Credentials")
                     }
-                SlackStatusView(delegate: self.delegate)
+                SlackStatusSettingsView(delegate: self.delegate)
                     .tabItem {
                         Label("Slack Status", systemImage: "lock.circle")
                         Text("Slack Status")
+                    }
+                KnownLocationsSettingsView(delegate: self.delegate)
+                    .tabItem {
+                        Label("Known Locations", systemImage: "lock.circle")
+                        Text("Known Locations")
                     }
             }
         }

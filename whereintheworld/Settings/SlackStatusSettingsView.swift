@@ -8,11 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct SlackStatusView: View, SlackStatusDetailDelegate {
+struct SlackStatusSettingsView: View, SlackStatusDetailDelegate {
     private var delegate:SettingsViewDelegate?
-    @State private var googleApiKey: String = ""
-    @State private var slackApiKey: String = ""
-    @State private var manualStatusItems: [ManualStatusItem] = []
+    @State private var manualStatusItems: [ManualSlackStatusItem] = []
     @State private var selection: Int? = nil
     
     var body: some View {
@@ -20,7 +18,7 @@ struct SlackStatusView: View, SlackStatusDetailDelegate {
             NavigationView {
                 List(manualStatusItems) { slackStatusItem in
                     NavigationLink {
-                        SlackStatusDetail(delegate: self, slackStatus: slackStatusItem)
+                        SlackStatusDetailView(delegate: self, slackStatus: slackStatusItem)
                     } label: {
                         Text("\(slackStatusItem.title) (\(slackStatusItem.slackExpirationForUI))")
                     }
@@ -49,7 +47,7 @@ struct SlackStatusView: View, SlackStatusDetailDelegate {
                 let decoder = JSONDecoder()
 
                 // Decode Note
-                let statusItems = try decoder.decode([ManualStatusItem].self, from: data)
+                let statusItems = try decoder.decode([ManualSlackStatusItem].self, from: data)
                 manualStatusItems = statusItems
             } catch {
                 print("Unable to decode Slack Status menu items (\(error))")
@@ -84,12 +82,12 @@ struct SlackStatusView: View, SlackStatusDetailDelegate {
         }
         
         manualStatusItems.append(
-            ManualStatusItem(id: maxId+1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600))
+            ManualSlackStatusItem(id: maxId+1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600))
         
         // Todo: navigate to new entry
     }
     
-    func saveSlackStatus(slackStatus: ManualStatusItem) {
+    func saveSlackStatus(slackStatus: ManualSlackStatusItem) {
         var elementAtIndex = -1
         for (index, element) in manualStatusItems.enumerated() {
             if (element.id == slackStatus.id) {
@@ -105,7 +103,7 @@ struct SlackStatusView: View, SlackStatusDetailDelegate {
         }
     }
     
-    func deleteSlackStatus(slackStatus: ManualStatusItem) {
+    func deleteSlackStatus(slackStatus: ManualSlackStatusItem) {
         var elementAtIndex = -1
         for (index, element) in manualStatusItems.enumerated() {
             if (element.id == slackStatus.id) {

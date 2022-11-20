@@ -18,16 +18,16 @@ protocol LocationControllerDelegate {
 
 class LocationController: NSObject, CLLocationManagerDelegate {
     private var delegate:LocationControllerDelegate?
-    private let manager: CLLocationManager
+    private let manager:CLLocationManager
     
-    private var googleMapsApiKey : String = ""
+    private var googleMapsApiKey:String = ""
     
-    private var knownLocations : [KnownLocation] = []
-    private var permanentStatusIcons : [String] = []
+    private var knownLocations:[KnownLocation] = []
     
-    init(googleApiKey: String) {
+    init(googleApiKey:String, knownLocations:[KnownLocation]) {
         self.manager = CLLocationManager()
         self.googleMapsApiKey = googleApiKey
+        self.knownLocations = knownLocations
         super.init()
         
         self.manager.delegate = self
@@ -59,7 +59,7 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         if locationType == "airport" {
             fullLocation = "✈️ " + location + ", " + country
         } else if locationType == "train" {
-            fullLocation = "🚂 " + location + ", " + country
+            fullLocation = "🚄 " + location + ", " + country
         } else if locationType == "home" {
             fullLocation = "🏠 " + location + ", " + country
         } else if locationType == "office" || locationType == "wework" {
@@ -166,16 +166,16 @@ class LocationController: NSObject, CLLocationManagerDelegate {
                             for loc in self.knownLocations {
                                 if let postcodePrefix = loc.postcodePrefix {
                                     if postcodePrefix != "" && component.shortName.starts(with: postcodePrefix) {
-                                        location = loc.name ?? ""
-                                        locationType = loc.type ?? ""
+                                        location = loc.name
+                                        locationType = loc.type
                                         break
                                     }
                                 }
                                 
-                                if let wifi = loc.wifi {
-                                    if wifi != "" && currentSSID == wifi {
-                                        location = loc.name ?? ""
-                                        locationType = loc.type ?? ""
+                                if let ssid = loc.ssid {
+                                    if ssid != "" && currentSSID == ssid {
+                                        location = loc.name
+                                        locationType = loc.type
                                         break
                                     }
                                 }
@@ -307,11 +307,4 @@ class LocationController: NSObject, CLLocationManagerDelegate {
                 print("unknown state: \(status)")
         }
     }
-}
-
-struct KnownLocation : Codable {
-    let name: String?
-    let postcodePrefix: String?
-    let type: String?
-    let wifi: String?
 }

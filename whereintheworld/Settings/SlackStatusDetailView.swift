@@ -1,5 +1,5 @@
 //
-//  SlackStatusRowView.swift
+//  SlackStatusDetailView.swift
 //  whereintheworld
 //
 //  Created by Sebastian Rosch on 19/11/2022.
@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 protocol SlackStatusDetailDelegate {
-    func saveSlackStatus(slackStatus:ManualStatusItem)
-    func deleteSlackStatus(slackStatus:ManualStatusItem)
+    func saveSlackStatus(slackStatus:ManualSlackStatusItem)
+    func deleteSlackStatus(slackStatus:ManualSlackStatusItem)
 }
 
-struct SlackStatusDetail: View {
+struct SlackStatusDetailView: View {
     var delegate:SlackStatusDetailDelegate?
-    @State var slackStatus: ManualStatusItem
+    @State var slackStatus: ManualSlackStatusItem
     @State var selectOptions: [String] = ["never","15 minutes","30 minutes","1 hour","2 hours","4 hours","8 hours"]
 
     var body: some View {
@@ -62,8 +62,7 @@ struct SlackStatusDetail: View {
 struct SlackStatusDetail_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            SlackStatusDetail(slackStatus: ManualStatusItem(id: 1, title: "🍕 Lunch (1h)", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600))
-            SlackStatusDetail(slackStatus: ManualStatusItem(id: 2, title: "🍕 Lunch (1h)", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600))
+            SlackStatusDetailView(slackStatus: ManualSlackStatusItem(id: 1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600))
         }
         .previewLayout(.fixed(width: 300, height: 70))
     }

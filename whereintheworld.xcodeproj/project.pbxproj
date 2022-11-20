@@ -19,9 +19,13 @@
 		9E2ECB552923D07400DF408D /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB542923D07400DF408D /* LocationController.swift */; };
 		9E2ECB572924CCDE00DF408D /* SlackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB562924CCDE00DF408D /* SlackController.swift */; };
 		9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB582924EFC400DF408D /* SecretsView.swift */; };
-		9E2ECB5B2924F3B500DF408D /* SlackStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5A2924F3B500DF408D /* SlackStatusView.swift */; };
+		9E2ECB5B2924F3B500DF408D /* SlackStatusSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */; };
 		9E2ECB5E292972BF00DF408D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5D292972BF00DF408D /* Constants.swift */; };
 		9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */; };
+		9E2ECB642929963700DF408D /* ManualSlackStatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */; };
+		9E2ECB662929973900DF408D /* KnownLocationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */; };
+		9E2ECB69292997BB00DF408D /* KnownLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB68292997BB00DF408D /* KnownLocation.swift */; };
+		9E2ECB6B2929991600DF408D /* KnownLocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB6A2929991600DF408D /* KnownLocationDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,9 +44,13 @@
 		9E2ECB542923D07400DF408D /* LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
 		9E2ECB562924CCDE00DF408D /* SlackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackController.swift; sourceTree = "<group>"; };
 		9E2ECB582924EFC400DF408D /* SecretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsView.swift; sourceTree = "<group>"; };
-		9E2ECB5A2924F3B500DF408D /* SlackStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusView.swift; sourceTree = "<group>"; };
+		9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusSettingsView.swift; sourceTree = "<group>"; };
 		9E2ECB5D292972BF00DF408D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusDetailView.swift; sourceTree = "<group>"; };
+		9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSlackStatusItem.swift; sourceTree = "<group>"; };
+		9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownLocationsSettingsView.swift; sourceTree = "<group>"; };
+		9E2ECB68292997BB00DF408D /* KnownLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownLocation.swift; sourceTree = "<group>"; };
+		9E2ECB6A2929991600DF408D /* KnownLocationDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownLocationDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,16 +86,13 @@
 		9E2EC00328DA58B700F5CCD5 /* whereintheworld */ = {
 			isa = PBXGroup;
 			children = (
+				9E2ECB672929976300DF408D /* Settings */,
 				9E2ECB5C292972AD00DF408D /* Utils */,
 				9E2ECB442922CE1E00DF408D /* Info.plist */,
 				9E2ECB3D2922CC9400DF408D /* Models */,
 				9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */,
 				9E2ECB542923D07400DF408D /* LocationController.swift */,
 				9E2ECB562924CCDE00DF408D /* SlackController.swift */,
-				9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */,
-				9E2ECB582924EFC400DF408D /* SecretsView.swift */,
-				9E2ECB5A2924F3B500DF408D /* SlackStatusView.swift */,
-				9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */,
 				9E2ECB422922CCFD00DF408D /* StatusItemController.swift */,
 				9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */,
 				9E2EC00D28DA58B800F5CCD5 /* whereintheworld.entitlements */,
@@ -109,6 +114,8 @@
 			children = (
 				9E2ECB3E2922CCA200DF408D /* Slack.swift */,
 				9E2ECB402922CCBE00DF408D /* GoogleMaps.swift */,
+				9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */,
+				9E2ECB68292997BB00DF408D /* KnownLocation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -128,6 +135,19 @@
 				9E2ECB5D292972BF00DF408D /* Constants.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		9E2ECB672929976300DF408D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */,
+				9E2ECB582924EFC400DF408D /* SecretsView.swift */,
+				9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */,
+				9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */,
+				9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */,
+				9E2ECB6A2929991600DF408D /* KnownLocationDetailView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,14 +221,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */,
+				9E2ECB662929973900DF408D /* KnownLocationsSettingsView.swift in Sources */,
 				9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */,
 				9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */,
 				9E2ECB412922CCBE00DF408D /* GoogleMaps.swift in Sources */,
 				9E2ECB432922CCFD00DF408D /* StatusItemController.swift in Sources */,
-				9E2ECB5B2924F3B500DF408D /* SlackStatusView.swift in Sources */,
+				9E2ECB69292997BB00DF408D /* KnownLocation.swift in Sources */,
+				9E2ECB6B2929991600DF408D /* KnownLocationDetailView.swift in Sources */,
+				9E2ECB5B2924F3B500DF408D /* SlackStatusSettingsView.swift in Sources */,
 				9E2ECB5E292972BF00DF408D /* Constants.swift in Sources */,
 				9E2ECB572924CCDE00DF408D /* SlackController.swift in Sources */,
 				9E2ECB3F2922CCA200DF408D /* Slack.swift in Sources */,
+				9E2ECB642929963700DF408D /* ManualSlackStatusItem.swift in Sources */,
 				9E2ECB552923D07400DF408D /* LocationController.swift in Sources */,
 				9E2EC00528DA58B700F5CCD5 /* whereintheworldApp.swift in Sources */,
 			);
