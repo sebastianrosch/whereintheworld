@@ -60,11 +60,11 @@ class StatusItemController {
         if (manualStatusItems.count <= 0) {
             // Set default Slack Status items.
             let manualStatusItems = [
-                ManualSlackStatusItem(id: 1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "At lunch", slackEmoji: ":pizza:", slackExpiration: 3600),
+                ManualSlackStatusItem(id: 1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "Out for lunch", slackEmoji: ":pizza:", slackExpiration: 3600),
                 ManualSlackStatusItem(id: 2, title: "🧑‍🤝‍🧑 Offline Meeting", keyEquivalent: "m", slackStatusText: "In a meeting", slackEmoji: ":people_holding_hands:", slackExpiration: 3600),
                 ManualSlackStatusItem(id: 3, title: "👏 Workshop", keyEquivalent: "w", slackStatusText: "In a workshop", slackEmoji: ":clap:", slackExpiration: 7200),
-                ManualSlackStatusItem(id: 4, title: "🚄 Train", keyEquivalent: "t", slackStatusText: "In a train", slackEmoji: ":bullettrain_side:", slackExpiration: 7200),
-                ManualSlackStatusItem(id: 5, title: "🏝️ On vacation", keyEquivalent: "v", slackStatusText: "On vacation", slackEmoji: ":desert_island:", slackExpiration: 0)
+                ManualSlackStatusItem(id: 4, title: "🚄 Train", keyEquivalent: "t", slackStatusText: "On a train", slackEmoji: ":bullettrain_side:", slackExpiration: 7200),
+                ManualSlackStatusItem(id: 5, title: "🏝️ Vacations", keyEquivalent: "v", slackStatusText: "On vacations", slackEmoji: ":desert_island:", slackExpiration: 0)
             ]
             
             do {

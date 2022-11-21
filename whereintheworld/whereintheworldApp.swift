@@ -72,11 +72,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
             }
         }
         
-//        if googleApiKey == "" || slackApiKey == "" {
+        if googleApiKey == "" || slackApiKey == "" {
             openSettings()
-//        } else {
-//            NSApplication.shared.keyWindow?.close()
-//        }
+        } else {
+            NSApplication.shared.keyWindow?.close()
+        }
         
         statusItemController = StatusItemController()
         statusItemController.setDelegate(delegate: self)
@@ -86,6 +86,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
             self.locationController = LocationController(googleApiKey: googleApiKey,
                                                          knownLocations: knownLocations)
             self.locationController.setDelegate(delegate: self)
+            self.statusItemController.setLocation(location: "Waiting for location...")
         }
         
         slackController = SlackController(slackApiKey: slackApiKey,

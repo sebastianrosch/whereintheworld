@@ -24,11 +24,21 @@ class LocationController: NSObject, CLLocationManagerDelegate {
     
     private var knownLocations:[KnownLocation] = []
     
+    private var wifiTimer:Timer? = nil
+    private var isSSIDKnown:Bool = false
+    
     init(googleApiKey:String, knownLocations:[KnownLocation]) {
         self.manager = CLLocationManager()
         self.googleMapsApiKey = googleApiKey
         self.knownLocations = knownLocations
         super.init()
+        
+        var timerInterval = 60.0
+#if DEBUG
+        timerInterval = 10.0
+#endif
+        
+        self.wifiTimer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(checkSSIDs), userInfo: nil, repeats: true)
         
         self.manager.delegate = self
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
@@ -59,7 +69,7 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         if locationType == "airport" {
             fullLocation = "✈️ " + location + ", " + country
         } else if locationType == "train" {
-            fullLocation = "🚄 " + location + ", " + country
+            fullLocation = "🚄 " + location
         } else if locationType == "home" {
             fullLocation = "🏠 " + location + ", " + country
         } else if locationType == "office" || locationType == "wework" {
@@ -72,6 +82,56 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         self.delegate?.locationChanged(location: fullLocation)
     }
     
+    @objc func checkSSIDs() {
+        // Get current WifiSSID to add to location identifiers
+        let currentSSIDs = currentSSIDs()
+        var currentSSID = ""
+        if currentSSIDs.count > 0 {
+            currentSSID = currentSSIDs[0]
+        }
+        
+        var location = ""
+        var locationType = ""
+        
+        // Check for SSID with priority.
+        var foundSSID = false
+        if (!currentSSID.isEmpty) {
+            for loc in self.knownLocations {
+                if let ssid = loc.ssid {
+                    if ssid != "" && currentSSID == ssid {
+                        location = loc.name
+                        locationType = loc.type
+                        foundSSID = true
+                        break
+                    }
+                }
+            }
+        }
+        
+        if (foundSSID) {
+            self.isSSIDKnown = true
+            
+            // Build the emoji.
+            var emoji = ":earth_africa:"
+            if locationType == "airport" {
+                emoji = ":airplane:"
+            } else if locationType == "home" {
+                emoji = ":house:"
+            } else if locationType == "train" {
+                emoji = ":bullettrain_side:"
+            } else if locationType == "office" {
+                emoji = ":office:"
+            } else if locationType == "wework" {
+                emoji = ":wework:"
+            }
+            
+            self.setNewLocation(location: location, withLocationType: locationType, withCountry: "")
+            self.delegate?.setSlackStatus(statusText: location, withEmoji: emoji, withExpiration: 0)
+        } else {
+            self.isSSIDKnown = false
+        }
+    }
+    
     private func currentSSIDs() -> [String] {
         let client = CWWiFiClient.shared()
         return client.interfaces()?.compactMap { interface in
@@ -80,16 +140,14 @@ class LocationController: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if locations.count <= 0 {
+        if (locations.count <= 0) {
             print("no locations received")
             return
         }
         
-        // Get current WifiSSID to add to location identifiers
-        let currentSSIDs = currentSSIDs()
-        var currentSSID = ""
-        if currentSSIDs.count > 0 {
-            currentSSID = currentSSIDs[0]
+        // If the SSID is a known location, we don't need the geolocation.
+        if (self.isSSIDKnown) {
+            return
         }
         
         let location = locations[0]
@@ -166,14 +224,6 @@ class LocationController: NSObject, CLLocationManagerDelegate {
                             for loc in self.knownLocations {
                                 if let postcodePrefix = loc.postcodePrefix {
                                     if postcodePrefix != "" && component.shortName.starts(with: postcodePrefix) {
-                                        location = loc.name
-                                        locationType = loc.type
-                                        break
-                                    }
-                                }
-                                
-                                if let ssid = loc.ssid {
-                                    if ssid != "" && currentSSID == ssid {
                                         location = loc.name
                                         locationType = loc.type
                                         break
