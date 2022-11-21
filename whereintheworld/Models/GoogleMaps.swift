@@ -1,32 +1,21 @@
 //
-//  Model.swift
+//  GoogleMaps.swift
 //  whereintheworld
 //
-//  Created by Sebastian Rosch on 11/02/2020.
-//  Copyright © 2022 Sebastian Rosch. All rights reserved.
+//  Created by Sebastian Rosch on 14/11/2022.
 //
 
 import Foundation
 
 // MARK: - AddressDetails
 struct AddressDetails: Codable {
-    let plusCode: PlusCode
-    let results: [Result]
+    let results: [Result]?
     let status: String
+    let errorMessage: String?
 
     enum CodingKeys: String, CodingKey {
-        case plusCode = "plus_code"
+        case errorMessage = "error_message"
         case results, status
-    }
-}
-
-// MARK: - PlusCode
-struct PlusCode: Codable {
-    let compoundCode, globalCode: String
-
-    enum CodingKeys: String, CodingKey {
-        case compoundCode = "compound_code"
-        case globalCode = "global_code"
     }
 }
 
@@ -36,7 +25,6 @@ struct Result: Codable {
     let formattedAddress: String
     let geometry: Geometry
     let placeID: String
-    let plusCode: PlusCode?
     let types: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -44,7 +32,6 @@ struct Result: Codable {
         case formattedAddress = "formatted_address"
         case geometry
         case placeID = "place_id"
-        case plusCode = "plus_code"
         case types
     }
 }

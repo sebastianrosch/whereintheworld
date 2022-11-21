@@ -2,8 +2,7 @@
 //  StatusItemController.swift
 //  whereintheworld
 //
-//  Created by Sebastian Rosch on 11/02/2020.
-//  Copyright © 2022 Sebastian Rosch. All rights reserved.
+//  Created by Sebastian Rosch on 14/11/2022.
 //
 
 import Cocoa
@@ -11,113 +10,144 @@ import SwiftUI
 
 protocol StatusItemControllerDelegate {
     func locationTrackingToggled(active:Bool)
+    func openSettings()
     func setSlackStatus(statusText: String, withEmoji emoji: String, withExpiration expiration: Int)
 }
 
 class StatusItemController {
-    var delegate:StatusItemControllerDelegate?
-    let statusItem: NSStatusItem
-    let locationEntry: NSMenuItem
-    let toggleButton: NSMenuItem
-    let quitButton: NSMenuItem
+    private var delegate:StatusItemControllerDelegate?
     
-    let statusMenuItem: NSMenuItem
-    let statusMenu: NSMenu
+    private let statusItem: NSStatusItem
+    private let statusMenuItem: NSMenuItem
+    private let toggleButton: NSMenuItem
     
-    var active: Bool
+    private var active: Bool
     
-    var title: String {
-        get {
-            return statusItem.button?.title ?? ""
-        }
-        set {
-            statusItem.button?.title = newValue
-        }
-    }
-    
-    var location: String {
-        get {
-            return locationEntry.title
-        }
-        set {
-            locationEntry.title = newValue
-        }
-    }
-    
-    init(statusItem: NSStatusItem) {
-        self.statusItem = statusItem
+    init() {
+        self.statusItem =  NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         self.active = true
         
-        self.locationEntry = NSMenuItem(title: "Waiting for location...", action: nil, keyEquivalent: "")
-        self.toggleButton = NSMenuItem(title: "Pause", action: #selector(toggleActive), keyEquivalent: "p")
-        self.quitButton = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
+        self.statusItem.button?.title = "♾️"
         
-        self.statusMenuItem = NSMenuItem(title: "Set status", action: nil, keyEquivalent: "s")
-        self.statusMenu = NSMenu(title: "Set status")
-        let lunchMenuItem = NSMenuItem(title: "🍕 Lunch (1h)", action: #selector(setLunch), keyEquivalent: "l")
-        lunchMenuItem.target = self
-        statusMenu.addItem(lunchMenuItem)
-        let offlineMeetingMenuItem = NSMenuItem(title: "🧑‍🤝‍🧑 Offline Meeting (1h)", action: #selector(setMeeting), keyEquivalent: "m")
-        offlineMeetingMenuItem.target = self
-        statusMenu.addItem(offlineMeetingMenuItem)
-        let workshopMenuItem = NSMenuItem(title: "👏 Workshop (2h)", action: #selector(setWorkshop), keyEquivalent: "w")
-        workshopMenuItem.target = self
-        statusMenu.addItem(workshopMenuItem)
-        let trainMenuItem = NSMenuItem(title: "🚄 Train (2h)", action: #selector(setWorkshop), keyEquivalent: "t")
-        trainMenuItem.target = self
-        statusMenu.addItem(trainMenuItem)
+        // Status
+        self.statusMenuItem = NSMenuItem(title: "Loading...", action: nil, keyEquivalent: "")
         
-    
+        // Util buttons
+        self.toggleButton = NSMenuItem(title: "Pause Tracking", action: #selector(toggleActive), keyEquivalent: "p")
         self.toggleButton.target = self
-        self.quitButton.target = self
-    }
+        
+        let settingsButton = NSMenuItem(title: "Settings", action: #selector(openSettings), keyEquivalent: "s")
+        settingsButton.target = self
+        
+        let quitButton = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
+        quitButton.target = self
+        
+        var manualStatusItems: [ManualSlackStatusItem] = []
+        
+        if let data = UserDefaults.standard.data(forKey: DefaultsKeys.slackStatusItemsKey) {
+            do {
+                // Create JSON Decoder
+                let decoder = JSONDecoder()
+
+                // Decode Note
+                let statusItems = try decoder.decode([ManualSlackStatusItem].self, from: data)
+                manualStatusItems = statusItems
+            } catch {
+                print("Unable to decode Slack Status menu items (\(error))")
+            }
+        }
+        
+        if (manualStatusItems.count <= 0) {
+            // Set default Slack Status items.
+            let manualStatusItems = [
+                ManualSlackStatusItem(id: 1, title: "🍕 Lunch", keyEquivalent: "l", slackStatusText: "Out for lunch", slackEmoji: ":pizza:", slackExpiration: 3600),
+                ManualSlackStatusItem(id: 2, title: "🧑‍🤝‍🧑 Offline Meeting", keyEquivalent: "m", slackStatusText: "In a meeting", slackEmoji: ":people_holding_hands:", slackExpiration: 3600),
+                ManualSlackStatusItem(id: 3, title: "👏 Workshop", keyEquivalent: "w", slackStatusText: "In a workshop", slackEmoji: ":clap:", slackExpiration: 7200),
+                ManualSlackStatusItem(id: 4, title: "🚄 Train", keyEquivalent: "t", slackStatusText: "On a train", slackEmoji: ":bullettrain_side:", slackExpiration: 7200),
+                ManualSlackStatusItem(id: 5, title: "🏝️ Vacations", keyEquivalent: "v", slackStatusText: "On vacations", slackEmoji: ":desert_island:", slackExpiration: 0)
+            ]
+            
+            do {
+                // Create JSON Encoder
+                let encoder = JSONEncoder()
     
-    convenience init(title: String) {
-        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        self.init(statusItem: item)
-        statusItem.button?.title = title
+                // Encode Note
+                let data = try encoder.encode(manualStatusItems)
+    
+                // Write/Set Data
+                UserDefaults.standard.set(data, forKey: DefaultsKeys.slackStatusItemsKey)
+    
+            } catch {
+                print("Unable to encode Slack Status menu items (\(error))")
+            }
+        }
+        
+        let setSlackStatusMenuItem = NSMenuItem(title: "Set Slack Status", action: nil, keyEquivalent: "s")
+        let setSlackStatusMenu = NSMenu(title: "Set Slack Status")
+        
+        for manualStatusItem in manualStatusItems {
+            let menuItem = NSMenuItem(
+                title: manualStatusItem.title,
+                action: #selector(setSlackStatus),
+                keyEquivalent: manualStatusItem.keyEquivalent)
+            menuItem.target = self
+            menuItem.representedObject = manualStatusItem
+            setSlackStatusMenu.addItem(menuItem)
+        }
         
         let statusBarMenu = NSMenu(title: "Menu")
         statusItem.menu = statusBarMenu
         
-        statusBarMenu.addItem(self.locationEntry)
         statusBarMenu.addItem(self.statusMenuItem)
-        statusBarMenu.setSubmenu(self.statusMenu, for: self.statusMenuItem)
+        statusBarMenu.addItem(.separator())
+        statusBarMenu.addItem(setSlackStatusMenuItem)
+        statusBarMenu.setSubmenu(setSlackStatusMenu, for: setSlackStatusMenuItem)
         statusBarMenu.addItem(self.toggleButton)
-        statusBarMenu.addItem(self.quitButton)
+        statusBarMenu.addItem(.separator())
+        statusBarMenu.addItem(settingsButton)
+        statusBarMenu.addItem(.separator())
+        statusBarMenu.addItem(quitButton)
     }
     
-    @objc func toggleActive() {
+    func setDelegate(delegate:StatusItemControllerDelegate?) {
+        self.delegate = delegate
+    }
+    
+    @objc private func toggleActive() {
         self.active = !self.active
         
         self.delegate?.locationTrackingToggled(active: self.active)
         
         if self.active {
-            self.toggleButton.title = "Pause"
+            self.toggleButton.title = "Pause Tracking"
             self.toggleButton.keyEquivalent = "p"
+            self.statusItem.button?.title = "♾️"
         } else {
-            self.toggleButton.title = "Continue"
-            self.toggleButton.keyEquivalent = "c"
+            self.toggleButton.title = "Resume Tracking"
+            self.toggleButton.keyEquivalent = "p"
+            self.statusItem.button?.title = "||"
         }
     }
     
-    @objc func setLunch() {
-        self.delegate?.setSlackStatus(statusText: "At lunch", withEmoji: ":pizza:", withExpiration: 3600)
-    }
-    @objc func setVacation() {
-        self.delegate?.setSlackStatus(statusText: "On vacation", withEmoji: ":desert_island:", withExpiration: 0)
-    }
-    @objc func setWorkshop() {
-        self.delegate?.setSlackStatus(statusText: "In a workshop", withEmoji: ":clap:", withExpiration: 7200)
-    }
-    @objc func setTrain() {
-        self.delegate?.setSlackStatus(statusText: "On a train", withEmoji: ":clap:", withExpiration: 7200)
-    }
-    @objc func setMeeting() {
-        self.delegate?.setSlackStatus(statusText: "In an offline meeting", withEmoji: ":people_holding_hands:", withExpiration: 3600)
+    @objc private func setSlackStatus(sender:Any) {
+        let menuItem = sender as? NSMenuItem
+        let manualStatusItem = menuItem?.representedObject as? ManualSlackStatusItem
+        let statusText = manualStatusItem?.slackStatusText ?? ""
+        let emoji = manualStatusItem?.slackEmoji ?? ""
+        let expiration = manualStatusItem?.slackExpiration ?? 0
+        
+        self.delegate?.setSlackStatus(statusText: statusText, withEmoji: emoji, withExpiration: expiration)
     }
     
-    @objc func quit() {
+    @objc private func openSettings() {
+        self.delegate?.openSettings()
+    }
+    
+    @objc private func quit() {
         NSApplication.shared.terminate(self)
+    }
+    
+    @objc func setLocation(location: String) {
+        self.statusMenuItem.title = location
     }
 }

@@ -3,115 +3,163 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9EA1E19D23F5E663003C0C42 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA1E19C23F5E663003C0C42 /* Model.swift */; };
-		9EC45D7923F307330060C845 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC45D7823F307330060C845 /* AppDelegate.swift */; };
-		9EC45D7D23F307360060C845 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EC45D7C23F307360060C845 /* Assets.xcassets */; };
-		9EC45D8023F307360060C845 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EC45D7F23F307360060C845 /* Preview Assets.xcassets */; };
-		9EC45D8323F307360060C845 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EC45D8123F307360060C845 /* Main.storyboard */; };
-		9EC45D8C23F307F00060C845 /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC45D8B23F307F00060C845 /* StatusItemController.swift */; };
-		9EC45D8E23F308A10060C845 /* DarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC45D8D23F308A10060C845 /* DarkMode.swift */; };
-		9EC45D9123F313590060C845 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EC45D9023F313590060C845 /* CoreLocation.framework */; };
-		9EC45D9423F325AD0060C845 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EC45D9223F324750060C845 /* MapKit.framework */; };
-		9EE2FD4B28B935FD00548058 /* config-local.json in Resources */ = {isa = PBXBuildFile; fileRef = 9EE2FD4A28B935FD00548058 /* config-local.json */; };
-		9EE6A43C27B5BB0900DE25B7 /* SlackModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */; };
+		9E2EC00528DA58B700F5CCD5 /* whereintheworldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */; };
+		9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */; };
+		9E2EC00928DA58B800F5CCD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */; };
+		9E2EC00C28DA58B800F5CCD5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E2EC00B28DA58B800F5CCD5 /* Preview Assets.xcassets */; };
+		9E2ECB3F2922CCA200DF408D /* Slack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB3E2922CCA200DF408D /* Slack.swift */; };
+		9E2ECB412922CCBE00DF408D /* GoogleMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB402922CCBE00DF408D /* GoogleMaps.swift */; };
+		9E2ECB432922CCFD00DF408D /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB422922CCFD00DF408D /* StatusItemController.swift */; };
+		9E2ECB472922CE2600DF408D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E2ECB462922CE2600DF408D /* CoreLocation.framework */; };
+		9E2ECB492922CE2C00DF408D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E2ECB482922CE2C00DF408D /* MapKit.framework */; };
+		9E2ECB552923D07400DF408D /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB542923D07400DF408D /* LocationController.swift */; };
+		9E2ECB572924CCDE00DF408D /* SlackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB562924CCDE00DF408D /* SlackController.swift */; };
+		9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB582924EFC400DF408D /* SecretsView.swift */; };
+		9E2ECB5B2924F3B500DF408D /* SlackStatusSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */; };
+		9E2ECB5E292972BF00DF408D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB5D292972BF00DF408D /* Constants.swift */; };
+		9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */; };
+		9E2ECB642929963700DF408D /* ManualSlackStatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */; };
+		9E2ECB662929973900DF408D /* KnownLocationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */; };
+		9E2ECB69292997BB00DF408D /* KnownLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB68292997BB00DF408D /* KnownLocation.swift */; };
+		9E2ECB6B2929991600DF408D /* KnownLocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB6A2929991600DF408D /* KnownLocationDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9EA1E19C23F5E663003C0C42 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		9EC45D7523F307330060C845 /* whereintheworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whereintheworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9EC45D7823F307330060C845 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9EC45D7C23F307360060C845 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9EC45D7F23F307360060C845 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		9EC45D8223F307360060C845 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9EC45D8423F307360060C845 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9EC45D8523F307360060C845 /* whereintheworld.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = whereintheworld.entitlements; sourceTree = "<group>"; };
-		9EC45D8B23F307F00060C845 /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
-		9EC45D8D23F308A10060C845 /* DarkMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkMode.swift; sourceTree = "<group>"; };
-		9EC45D9023F313590060C845 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		9EC45D9223F324750060C845 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		9EE2FD4A28B935FD00548058 /* config-local.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "config-local.json"; sourceTree = "<group>"; };
-		9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackModels.swift; sourceTree = "<group>"; };
+		9E2EC00128DA58B700F5CCD5 /* whereintheworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whereintheworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = whereintheworldApp.swift; sourceTree = "<group>"; };
+		9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9E2EC00B28DA58B800F5CCD5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9E2EC00D28DA58B800F5CCD5 /* whereintheworld.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = whereintheworld.entitlements; sourceTree = "<group>"; };
+		9E2ECB3E2922CCA200DF408D /* Slack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slack.swift; sourceTree = "<group>"; };
+		9E2ECB402922CCBE00DF408D /* GoogleMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMaps.swift; sourceTree = "<group>"; };
+		9E2ECB422922CCFD00DF408D /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
+		9E2ECB442922CE1E00DF408D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9E2ECB462922CE2600DF408D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		9E2ECB482922CE2C00DF408D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9E2ECB542923D07400DF408D /* LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
+		9E2ECB562924CCDE00DF408D /* SlackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackController.swift; sourceTree = "<group>"; };
+		9E2ECB582924EFC400DF408D /* SecretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsView.swift; sourceTree = "<group>"; };
+		9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusSettingsView.swift; sourceTree = "<group>"; };
+		9E2ECB5D292972BF00DF408D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlackStatusDetailView.swift; sourceTree = "<group>"; };
+		9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSlackStatusItem.swift; sourceTree = "<group>"; };
+		9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownLocationsSettingsView.swift; sourceTree = "<group>"; };
+		9E2ECB68292997BB00DF408D /* KnownLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownLocation.swift; sourceTree = "<group>"; };
+		9E2ECB6A2929991600DF408D /* KnownLocationDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownLocationDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9EC45D7223F307330060C845 /* Frameworks */ = {
+		9E2EBFFE28DA58B600F5CCD5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EC45D9423F325AD0060C845 /* MapKit.framework in Frameworks */,
-				9EC45D9123F313590060C845 /* CoreLocation.framework in Frameworks */,
+				9E2ECB492922CE2C00DF408D /* MapKit.framework in Frameworks */,
+				9E2ECB472922CE2600DF408D /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9EC45D6C23F307330060C845 = {
+		9E2EBFF828DA58B600F5CCD5 = {
 			isa = PBXGroup;
 			children = (
-				9EC45D7723F307330060C845 /* whereintheworld */,
-				9EC45D7623F307330060C845 /* Products */,
-				9EC45D8F23F313590060C845 /* Frameworks */,
+				9E2EC00328DA58B700F5CCD5 /* whereintheworld */,
+				9E2EC00228DA58B700F5CCD5 /* Products */,
+				9E2ECB452922CE2600DF408D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		9EC45D7623F307330060C845 /* Products */ = {
+		9E2EC00228DA58B700F5CCD5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9EC45D7523F307330060C845 /* whereintheworld.app */,
+				9E2EC00128DA58B700F5CCD5 /* whereintheworld.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9EC45D7723F307330060C845 /* whereintheworld */ = {
+		9E2EC00328DA58B700F5CCD5 /* whereintheworld */ = {
 			isa = PBXGroup;
 			children = (
-				9EE2FD4A28B935FD00548058 /* config-local.json */,
-				9EC45D7823F307330060C845 /* AppDelegate.swift */,
-				9EA1E19C23F5E663003C0C42 /* Model.swift */,
-				9EC45D8D23F308A10060C845 /* DarkMode.swift */,
-				9EC45D8B23F307F00060C845 /* StatusItemController.swift */,
-				9EC45D7C23F307360060C845 /* Assets.xcassets */,
-				9EC45D8123F307360060C845 /* Main.storyboard */,
-				9EC45D8423F307360060C845 /* Info.plist */,
-				9EC45D8523F307360060C845 /* whereintheworld.entitlements */,
-				9EC45D7E23F307360060C845 /* Preview Content */,
-				9EE6A43B27B5BB0900DE25B7 /* SlackModels.swift */,
+				9E2ECB672929976300DF408D /* Settings */,
+				9E2ECB5C292972AD00DF408D /* Utils */,
+				9E2ECB442922CE1E00DF408D /* Info.plist */,
+				9E2ECB3D2922CC9400DF408D /* Models */,
+				9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */,
+				9E2ECB542923D07400DF408D /* LocationController.swift */,
+				9E2ECB562924CCDE00DF408D /* SlackController.swift */,
+				9E2ECB422922CCFD00DF408D /* StatusItemController.swift */,
+				9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */,
+				9E2EC00D28DA58B800F5CCD5 /* whereintheworld.entitlements */,
+				9E2EC00A28DA58B800F5CCD5 /* Preview Content */,
 			);
 			path = whereintheworld;
 			sourceTree = "<group>";
 		};
-		9EC45D7E23F307360060C845 /* Preview Content */ = {
+		9E2EC00A28DA58B800F5CCD5 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				9EC45D7F23F307360060C845 /* Preview Assets.xcassets */,
+				9E2EC00B28DA58B800F5CCD5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		9EC45D8F23F313590060C845 /* Frameworks */ = {
+		9E2ECB3D2922CC9400DF408D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9EC45D9223F324750060C845 /* MapKit.framework */,
-				9EC45D9023F313590060C845 /* CoreLocation.framework */,
+				9E2ECB3E2922CCA200DF408D /* Slack.swift */,
+				9E2ECB402922CCBE00DF408D /* GoogleMaps.swift */,
+				9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */,
+				9E2ECB68292997BB00DF408D /* KnownLocation.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9E2ECB452922CE2600DF408D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9E2ECB482922CE2C00DF408D /* MapKit.framework */,
+				9E2ECB462922CE2600DF408D /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9E2ECB5C292972AD00DF408D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9E2ECB5D292972BF00DF408D /* Constants.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		9E2ECB672929976300DF408D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */,
+				9E2ECB582924EFC400DF408D /* SecretsView.swift */,
+				9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */,
+				9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */,
+				9E2ECB612929786200DF408D /* SlackStatusDetailView.swift */,
+				9E2ECB6A2929991600DF408D /* KnownLocationDetailView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9EC45D7423F307330060C845 /* whereintheworld */ = {
+		9E2EC00028DA58B600F5CCD5 /* whereintheworld */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9EC45D8823F307360060C845 /* Build configuration list for PBXNativeTarget "whereintheworld" */;
+			buildConfigurationList = 9E2EC01028DA58B800F5CCD5 /* Build configuration list for PBXNativeTarget "whereintheworld" */;
 			buildPhases = (
-				9EC45D7123F307330060C845 /* Sources */,
-				9EC45D7223F307330060C845 /* Frameworks */,
-				9EC45D7323F307330060C845 /* Resources */,
+				9E2EBFFD28DA58B600F5CCD5 /* Sources */,
+				9E2EBFFE28DA58B600F5CCD5 /* Frameworks */,
+				9E2EBFFF28DA58B600F5CCD5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -119,91 +167,87 @@
 			);
 			name = whereintheworld;
 			productName = whereintheworld;
-			productReference = 9EC45D7523F307330060C845 /* whereintheworld.app */;
+			productReference = 9E2EC00128DA58B700F5CCD5 /* whereintheworld.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9EC45D6D23F307330060C845 /* Project object */ = {
+		9E2EBFF928DA58B600F5CCD5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1320;
-				ORGANIZATIONNAME = "Sebastian Rosch";
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
-					9EC45D7423F307330060C845 = {
-						CreatedOnToolsVersion = 11.3.1;
+					9E2EC00028DA58B600F5CCD5 = {
+						CreatedOnToolsVersion = 14.0;
 					};
 				};
 			};
-			buildConfigurationList = 9EC45D7023F307330060C845 /* Build configuration list for PBXProject "whereintheworld" */;
-			compatibilityVersion = "Xcode 13.0";
+			buildConfigurationList = 9E2EBFFC28DA58B600F5CCD5 /* Build configuration list for PBXProject "whereintheworld" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 9EC45D6C23F307330060C845;
-			productRefGroup = 9EC45D7623F307330060C845 /* Products */;
+			mainGroup = 9E2EBFF828DA58B600F5CCD5;
+			productRefGroup = 9E2EC00228DA58B700F5CCD5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9EC45D7423F307330060C845 /* whereintheworld */,
+				9E2EC00028DA58B600F5CCD5 /* whereintheworld */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9EC45D7323F307330060C845 /* Resources */ = {
+		9E2EBFFF28DA58B600F5CCD5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EC45D8323F307360060C845 /* Main.storyboard in Resources */,
-				9EC45D8023F307360060C845 /* Preview Assets.xcassets in Resources */,
-				9EC45D7D23F307360060C845 /* Assets.xcassets in Resources */,
-				9EE2FD4B28B935FD00548058 /* config-local.json in Resources */,
+				9E2EC00C28DA58B800F5CCD5 /* Preview Assets.xcassets in Resources */,
+				9E2EC00928DA58B800F5CCD5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9EC45D7123F307330060C845 /* Sources */ = {
+		9E2EBFFD28DA58B600F5CCD5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EA1E19D23F5E663003C0C42 /* Model.swift in Sources */,
-				9EC45D8E23F308A10060C845 /* DarkMode.swift in Sources */,
-				9EC45D7923F307330060C845 /* AppDelegate.swift in Sources */,
-				9EC45D8C23F307F00060C845 /* StatusItemController.swift in Sources */,
-				9EE6A43C27B5BB0900DE25B7 /* SlackModels.swift in Sources */,
+				9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */,
+				9E2ECB662929973900DF408D /* KnownLocationsSettingsView.swift in Sources */,
+				9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */,
+				9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */,
+				9E2ECB412922CCBE00DF408D /* GoogleMaps.swift in Sources */,
+				9E2ECB432922CCFD00DF408D /* StatusItemController.swift in Sources */,
+				9E2ECB69292997BB00DF408D /* KnownLocation.swift in Sources */,
+				9E2ECB6B2929991600DF408D /* KnownLocationDetailView.swift in Sources */,
+				9E2ECB5B2924F3B500DF408D /* SlackStatusSettingsView.swift in Sources */,
+				9E2ECB5E292972BF00DF408D /* Constants.swift in Sources */,
+				9E2ECB572924CCDE00DF408D /* SlackController.swift in Sources */,
+				9E2ECB3F2922CCA200DF408D /* Slack.swift in Sources */,
+				9E2ECB642929963700DF408D /* ManualSlackStatusItem.swift in Sources */,
+				9E2ECB552923D07400DF408D /* LocationController.swift in Sources */,
+				9E2EC00528DA58B700F5CCD5 /* whereintheworldApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		9EC45D8123F307360060C845 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9EC45D8223F307360060C845 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		9EC45D8623F307360060C845 /* Debug */ = {
+		9E2EC00E28DA58B800F5CCD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -230,6 +274,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -247,7 +292,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -257,14 +302,13 @@
 			};
 			name = Debug;
 		};
-		9EC45D8723F307360060C845 /* Release */ = {
+		9E2EC00F28DA58B800F5CCD5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -291,6 +335,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -302,7 +347,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -311,50 +356,62 @@
 			};
 			name = Release;
 		};
-		9EC45D8923F307360060C845 /* Debug */ = {
+		9E2EC01128DA58B800F5CCD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = whereintheworld/whereintheworld.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"whereintheworld/Preview Content\"";
-				DEVELOPMENT_TEAM = 7J8Y3JD52D;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = whereintheworld/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Sebastian Rosch. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sebastianrosch.whereintheworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		9EC45D8A23F307360060C845 /* Release */ = {
+		9E2EC01228DA58B800F5CCD5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = whereintheworld/whereintheworld.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"whereintheworld/Preview Content\"";
-				DEVELOPMENT_TEAM = 7J8Y3JD52D;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = whereintheworld/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Sebastian Rosch. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sebastianrosch.whereintheworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -362,25 +419,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9EC45D7023F307330060C845 /* Build configuration list for PBXProject "whereintheworld" */ = {
+		9E2EBFFC28DA58B600F5CCD5 /* Build configuration list for PBXProject "whereintheworld" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9EC45D8623F307360060C845 /* Debug */,
-				9EC45D8723F307360060C845 /* Release */,
+				9E2EC00E28DA58B800F5CCD5 /* Debug */,
+				9E2EC00F28DA58B800F5CCD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9EC45D8823F307360060C845 /* Build configuration list for PBXNativeTarget "whereintheworld" */ = {
+		9E2EC01028DA58B800F5CCD5 /* Build configuration list for PBXNativeTarget "whereintheworld" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9EC45D8923F307360060C845 /* Debug */,
-				9EC45D8A23F307360060C845 /* Release */,
+				9E2EC01128DA58B800F5CCD5 /* Debug */,
+				9E2EC01228DA58B800F5CCD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9EC45D6D23F307330060C845 /* Project object */;
+	rootObject = 9E2EBFF928DA58B600F5CCD5 /* Project object */;
 }
