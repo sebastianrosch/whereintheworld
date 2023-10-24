@@ -15,6 +15,7 @@ struct SettingsView: View {
     private var delegate:SettingsViewDelegate?
     @State private var googleApiKey: String = ""
     @State private var slackApiKey: String = ""
+    @State private var useOpenStreetMap: Bool = false
     
     init(delegate:SettingsViewDelegate?) {
         self.delegate = delegate

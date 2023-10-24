@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C2682392AD945D9003085F6 /* Nominatim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2682382AD945D9003085F6 /* Nominatim.swift */; };
 		9E2EC00528DA58B700F5CCD5 /* whereintheworldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */; };
 		9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */; };
 		9E2EC00928DA58B800F5CCD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C2682382AD945D9003085F6 /* Nominatim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nominatim.swift; sourceTree = "<group>"; };
 		9E2EC00128DA58B700F5CCD5 /* whereintheworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whereintheworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = whereintheworldApp.swift; sourceTree = "<group>"; };
 		9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				9E2ECB402922CCBE00DF408D /* GoogleMaps.swift */,
 				9E2ECB632929963700DF408D /* ManualSlackStatusItem.swift */,
 				9E2ECB68292997BB00DF408D /* KnownLocation.swift */,
+				3C2682382AD945D9003085F6 /* Nominatim.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */,
 				9E2ECB412922CCBE00DF408D /* GoogleMaps.swift in Sources */,
 				9E2ECB432922CCFD00DF408D /* StatusItemController.swift in Sources */,
+				3C2682392AD945D9003085F6 /* Nominatim.swift in Sources */,
 				9E2ECB69292997BB00DF408D /* KnownLocation.swift in Sources */,
 				9E2ECB6B2929991600DF408D /* KnownLocationDetailView.swift in Sources */,
 				9E2ECB5B2924F3B500DF408D /* SlackStatusSettingsView.swift in Sources */,

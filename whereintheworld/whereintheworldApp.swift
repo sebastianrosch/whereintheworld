@@ -45,6 +45,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         if let slackApiKeyVal = defaults.string(forKey: DefaultsKeys.slackApiKey) {
             slackApiKey = slackApiKeyVal
         }
+        
+        let useOpenStreetMap = defaults.bool(forKey: DefaultsKeys.useOpenStreetMapKey)
+        
         if let knownLocationsVal = UserDefaults.standard.data(forKey: DefaultsKeys.knownLocationsKey) {
             do {
                 // Create JSON Decoder
@@ -72,7 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
             }
         }
         
-        if googleApiKey == "" || slackApiKey == "" {
+        if slackApiKey == "" || (!useOpenStreetMap && googleApiKey == "") {
             openSettings()
         } else {
             NSApplication.shared.keyWindow?.close()
@@ -84,6 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
             self.locationController = LocationController(googleApiKey: googleApiKey,
+                                                         useOpenStreetMap: useOpenStreetMap,
                                                          knownLocations: knownLocations)
             self.locationController.setDelegate(delegate: self)
             self.statusItemController.setLocation(location: "Waiting for location...")
@@ -148,7 +152,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
             slackApiKey = slackApiKeyVal
         }
         
+        let useOpenStreetMapVal = defaults.bool(forKey: DefaultsKeys.useOpenStreetMapKey)
+        
         self.locationController.setGoogleApiKey(googleApiKey: googleApiKey)
+        self.locationController.setUseOpenStreetMap(useOpenStreetMap: useOpenStreetMapVal)
         self.slackController.setSlackApiKey(slackApiKey: slackApiKey)
     }
 }

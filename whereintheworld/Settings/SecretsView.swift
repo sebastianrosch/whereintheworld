@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SecretsView: View {
     private var delegate:SettingsViewDelegate?
+    @State private var useOpenStreetMap: Bool = false
     @State private var googleApiKey: String = ""
     @State private var slackApiKey: String = ""
     
@@ -20,6 +21,9 @@ struct SecretsView: View {
     var body: some View {
         VStack {
             Form {
+                Toggle(isOn: $useOpenStreetMap) {
+                    Text("Use OpenStreetMap?")
+                }
                 SecureInputView("Google Maps API Key", text: $googleApiKey)
                 SecureInputView("Slack API Key", text: $slackApiKey)
             }
@@ -54,6 +58,9 @@ struct SecretsView: View {
         } else {
             slackApiKey = ""
         }
+        
+        // Defaults to false.
+        useOpenStreetMap = defaults.bool(forKey: DefaultsKeys.useOpenStreetMapKey)
     }
     
     func saveSettings() {
@@ -63,6 +70,7 @@ struct SecretsView: View {
         
         defaults.set(googleApiKey, forKey: DefaultsKeys.googleApiKey)
         defaults.set(slackApiKey, forKey: DefaultsKeys.slackApiKey)
+        defaults.set(useOpenStreetMap, forKey: DefaultsKeys.useOpenStreetMapKey)
         
         self.delegate?.settingsChanged()
     }
@@ -72,6 +80,7 @@ struct SecretsView: View {
         
         googleApiKey = ""
         slackApiKey = ""
+        useOpenStreetMap = false
         
         saveSettings()
     }
