@@ -16,6 +16,13 @@ The icon shows whether `WhereInTheWorld` is running or paused.
 
 If you don't want `WhereInTheWorld` to override your Slack status, you can simply pause it in the status bar.
 
+## Status bar icon (light/dark mode)
+
+The status bar icon is set in `whereintheworld/StatusItemController.swift`.
+
+- **Recommended:** use an SF Symbol via `NSImage(systemSymbolName:..., ...)` and set `image.isTemplate = true` so macOS automatically tints it correctly in both light and dark mode.
+- **If you want custom artwork:** add an Image Set to `Assets.xcassets`, then in the Attributes inspector set **Appearances** to **Any, Dark** and provide separate images for each. For best results, keep them template-style and set the resulting `NSImage` to `isTemplate = true`.
+
 ## Exceptions
 
 - The Slack status is not updated while the icon is set to `:zoom:` to prevent it from overriding the more detailed status. See [https://github.com/mivok/slack_status_updater](https://github.com/mivok/slack_status_updater).
