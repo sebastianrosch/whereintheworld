@@ -19,17 +19,19 @@ protocol LocationControllerDelegate {
 class LocationController: NSObject, CLLocationManagerDelegate {
     private var delegate:LocationControllerDelegate?
     private let manager:CLLocationManager
-    
-    private var googleMapsApiKey:String = ""
+    private let geocoder = CLGeocoder()
+    private var isGeocoding:Bool = false
+    private var lastGeocodeAttempt:Date? = nil
     
     private var knownLocations:[KnownLocation] = []
     
     private var wifiTimer:Timer? = nil
     private var isSSIDKnown:Bool = false
+    private var userTrackingEnabled:Bool = true
+    private var isUpdatingLocation:Bool = false
     
-    init(googleApiKey:String, knownLocations:[KnownLocation]) {
+    init(knownLocations:[KnownLocation]) {
         self.manager = CLLocationManager()
-        self.googleMapsApiKey = googleApiKey
         self.knownLocations = knownLocations
         super.init()
         
@@ -42,23 +44,35 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         
         self.manager.delegate = self
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
-        self.manager.startUpdatingLocation()
+        self.isSSIDKnown = self.isKnownSSIDCurrently()
+        self.updateGeolocationTracking()
     }
     
     func setDelegate(delegate:LocationControllerDelegate?) {
         self.delegate = delegate
     }
     
-    func setGoogleApiKey(googleApiKey: String){
-        self.googleMapsApiKey = googleApiKey
+    func setKnownLocations(knownLocations: [KnownLocation]) {
+        self.knownLocations = knownLocations
+        self.isSSIDKnown = self.isKnownSSIDCurrently()
+        self.updateGeolocationTracking()
     }
     
     func toggleLocationTracking(active: Bool) {
-        if active {
+        self.userTrackingEnabled = active
+        self.updateGeolocationTracking()
+    }
+
+    private func updateGeolocationTracking() {
+        let shouldUpdateLocation = self.userTrackingEnabled && !self.isSSIDKnown
+
+        if shouldUpdateLocation && !self.isUpdatingLocation {
             self.manager.startUpdatingLocation()
+            self.isUpdatingLocation = true
             print("resumed location tracking")
-        } else {
+        } else if !shouldUpdateLocation && self.isUpdatingLocation {
             self.manager.stopUpdatingLocation()
+            self.isUpdatingLocation = false
             print("paused location tracking")
         }
     }
@@ -83,6 +97,8 @@ class LocationController: NSObject, CLLocationManagerDelegate {
     }
     
     @objc func checkSSIDs() {
+        let wasSSIDKnown = self.isSSIDKnown
+
         // Get current WifiSSID to add to location identifiers
         let currentSSIDs = currentSSIDs()
         var currentSSID = ""
@@ -110,6 +126,9 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         
         if (foundSSID) {
             self.isSSIDKnown = true
+            if wasSSIDKnown != self.isSSIDKnown {
+                self.updateGeolocationTracking()
+            }
             
             // Build the emoji.
             var emoji = ":earth_africa:"
@@ -129,7 +148,25 @@ class LocationController: NSObject, CLLocationManagerDelegate {
             self.delegate?.setSlackStatus(statusText: location, withEmoji: emoji, withExpiration: 0)
         } else {
             self.isSSIDKnown = false
+            if wasSSIDKnown != self.isSSIDKnown {
+                self.updateGeolocationTracking()
+            }
         }
+    }
+
+    private func isKnownSSIDCurrently() -> Bool {
+        let currentSSIDs = currentSSIDs()
+        guard let currentSSID = currentSSIDs.first, !currentSSID.isEmpty else {
+            return false
+        }
+
+        for loc in self.knownLocations {
+            if let ssid = loc.ssid, !ssid.isEmpty, currentSSID == ssid {
+                return true
+            }
+        }
+
+        return false
     }
     
     private func currentSSIDs() -> [String] {
@@ -150,183 +187,103 @@ class LocationController: NSObject, CLLocationManagerDelegate {
             return
         }
         
+        if !self.userTrackingEnabled {
+            return
+        }
+        
+        if self.isGeocoding {
+            return
+        }
+        
+        // Avoid spamming reverse geocoding on frequent location updates.
+        if let lastAttempt = self.lastGeocodeAttempt, Date().timeIntervalSince(lastAttempt) < 20 {
+            return
+        }
+        self.lastGeocodeAttempt = Date()
+        
         let location = locations[0]
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
-        
-        let url = String(format: "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%@", latitude, longitude, self.googleMapsApiKey)
-        
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
-            do {
-                if error == nil,
-                   let httpResponse = response as? HTTPURLResponse
-                {
-                    switch httpResponse.statusCode {
-                    case 200:
-                        if data == nil {
-                            print("error getting data from location request")
-                            self.delegate?.locationChanged(location: "Error while getting a response")
-                            return
-                        }
-                        
-#if DEBUG
-                        if let string = String(bytes: data!, encoding: .utf8) {
-                            print(string)
-                        } else {
-                            print("not a valid UTF-8 sequence")
-                        }
-#endif
-                        
-                        break
-                    default:
-                        return
-                    }
-                } else {
-                    print("error getting location: \(String(describing: error))")
-                    self.delegate?.locationChanged(location: "Error")
-                    return
-                }
-                
-                // Validation passed, decode response.
-                let decoder = JSONDecoder()
-                let addressDetails = try? decoder.decode(AddressDetails.self, from: data!)
-                if addressDetails == nil {
-                    print("could not parse response")
-                    self.delegate?.locationChanged(location: "Error while parsing the response")
-                    return
-                }
-                
-                if addressDetails!.errorMessage != nil && !addressDetails!.errorMessage!.isEmpty {
-                    print("error response from Google Maps API: \(addressDetails!.errorMessage!)")
-                    self.delegate?.locationChanged(location: addressDetails!.errorMessage!)
-                    return
-                }
-                
-                if addressDetails!.results == nil {
-                    print("no results")
-                    self.delegate?.locationChanged(location: "No results for location found")
-                    return
-                }
-                
-                var location = ""
-                var country = ""
-                var countryCode = ""
-                var locationType = ""
-
-                // First pass trying to identify known locations.
-                for address in addressDetails!.results! {
-                    for component in address.addressComponents {
-                        if component.types.contains("postal_code") {
-                            for loc in self.knownLocations {
-                                if let postcodePrefix = loc.postcodePrefix {
-                                    if postcodePrefix != "" && component.shortName.starts(with: postcodePrefix) {
-                                        location = loc.name
-                                        locationType = loc.type
-                                        break
-                                    }
-                                }
-                            }
-                        }
-                        if component.types.contains("country") {
-                            country = component.longName
-                        }
-                    }
-                }
-
-                // Second pass trying to identify country and airport.
-                if location == "" || country == "" {
-                    for address in addressDetails!.results! {
-                        for component in address.addressComponents {
-                            if component.types.contains("airport") && !component.types.contains("store") {
-                                location = component.longName
-                                locationType = "airport"
-                            }
-                            if component.types.contains("country") {
-                                country = component.longName
-                            }
-                        }
-                    }
-                }
-
-                // Third pass trying to identify country and postal town.
-                if location == "" || country == "" {
-                    for address in addressDetails!.results! {
-                        for component in address.addressComponents {
-                            if component.types.contains("postal_town") {
-                                location = component.longName
-                                locationType = "city"
-                            }
-                            if component.types.contains("country") {
-                                country = component.longName
-                                countryCode = component.shortName
-                            }
-                        }
-                    }
-                }
-                
-                // Fourth pass trying to identify country and locality.
-                if location == "" || country == "" {
-                    for address in addressDetails!.results! {
-                        for component in address.addressComponents {
-                            if component.types.contains("locality") {
-                                location = component.longName
-                                locationType = "city"
-                            }
-                            if component.types.contains("country") {
-                                country = component.longName
-                                countryCode = component.shortName
-                            }
-                        }
-                    }
-                }
-                
-                // Fifth pass trying to identify country and locality.
-                if location == "" || country == "" {
-                    for address in addressDetails!.results! {
-                        for component in address.addressComponents {
-                            if component.types.contains("administrative_area_level_3") {
-                                location = component.longName
-                                locationType = "city"
-                            }
-                            if component.types.contains("country") {
-                                country = component.longName
-                                countryCode = component.shortName
-                            }
-                        }
-                    }
-                }
-                
-                if country == "United Kingdom" {
-                    country = "UK"
-                }
-                                
-                // Build the emoji.
-                var emoji = ":earth_africa:"
-                if locationType == "airport" {
-                    emoji = ":airplane:"
-                } else if locationType == "home" {
-                    emoji = ":house:"
-                } else if locationType == "train" {
-                    emoji = ":steam_locomotive:"
-                } else if locationType == "office" {
-                    emoji = ":office:"
-                } else if locationType == "wework" {
-                    emoji = ":wework:"
-                } else if countryCode != "" {
-                    emoji = ":flag-" + countryCode.lowercased() + ":"
-                }
-                
-                self.setNewLocation(location: location, withLocationType: locationType, withCountry: country)
-                self.delegate?.setSlackStatus(statusText: location + ", " + country, withEmoji: emoji, withExpiration: 0)
-
+        self.isGeocoding = true
+        self.geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            self.isGeocoding = false
+            
+            if let error = error {
+                print("reverse geocode failed with \(error)")
+                return
             }
-        })
-
-        task.resume()
+            
+            guard let placemark = placemarks?.first else {
+                print("reverse geocode returned no placemarks")
+                return
+            }
+            
+            var resolvedLocation = ""
+            var locationType = ""
+            var country = placemark.country ?? ""
+            var countryCode = placemark.isoCountryCode ?? ""
+            
+            // First pass: known locations by postcode prefix.
+            if let postalCode = placemark.postalCode, !postalCode.isEmpty {
+                for loc in self.knownLocations {
+                    if let postcodePrefix = loc.postcodePrefix, !postcodePrefix.isEmpty, postalCode.hasPrefix(postcodePrefix) {
+                        resolvedLocation = loc.name
+                        locationType = loc.type
+                        break
+                    }
+                }
+            }
+            
+            // Second pass: airport-ish detection.
+            if resolvedLocation.isEmpty {
+                if let aoi = placemark.areasOfInterest?.first, !aoi.isEmpty, aoi.localizedCaseInsensitiveContains("airport") {
+                    resolvedLocation = aoi
+                    locationType = "airport"
+                } else if let name = placemark.name, name.localizedCaseInsensitiveContains("airport") {
+                    resolvedLocation = name
+                    locationType = "airport"
+                }
+            }
+            
+            // Third pass: city-ish naming.
+            if resolvedLocation.isEmpty {
+                resolvedLocation = placemark.locality
+                    ?? placemark.subAdministrativeArea
+                    ?? placemark.administrativeArea
+                    ?? placemark.name
+                    ?? ""
+                
+                if !resolvedLocation.isEmpty {
+                    locationType = "city"
+                }
+            }
+            
+            if country == "United Kingdom" {
+                country = "UK"
+            }
+            
+            if resolvedLocation.isEmpty || country.isEmpty {
+                print("could not resolve a meaningful location from placemark")
+                return
+            }
+            
+            // Build the emoji.
+            var emoji = ":earth_africa:"
+            if locationType == "airport" {
+                emoji = ":airplane:"
+            } else if locationType == "home" {
+                emoji = ":house:"
+            } else if locationType == "train" {
+                emoji = ":steam_locomotive:"
+            } else if locationType == "office" {
+                emoji = ":office:"
+            } else if locationType == "wework" {
+                emoji = ":wework:"
+            } else if !countryCode.isEmpty {
+                emoji = ":flag-" + countryCode.lowercased() + ":"
+            }
+            
+            self.setNewLocation(location: resolvedLocation, withLocationType: locationType, withCountry: country)
+            self.delegate?.setSlackStatus(statusText: resolvedLocation + ", " + country, withEmoji: emoji, withExpiration: 0)
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

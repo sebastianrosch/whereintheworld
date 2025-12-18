@@ -10,7 +10,6 @@ import SwiftUI
 
 struct SecretsView: View {
     private var delegate:SettingsViewDelegate?
-    @State private var googleApiKey: String = ""
     @State private var slackApiKey: String = ""
     
     init(delegate:SettingsViewDelegate?) {
@@ -20,7 +19,6 @@ struct SecretsView: View {
     var body: some View {
         VStack {
             Form {
-                SecureInputView("Google Maps API Key", text: $googleApiKey)
                 SecureInputView("Slack API Key", text: $slackApiKey)
             }
             HStack {
@@ -43,12 +41,6 @@ struct SecretsView: View {
         
         let defaults = UserDefaults.standard
         
-        if let googleApiKeyVal = defaults.string(forKey: DefaultsKeys.googleApiKey) {
-            googleApiKey = googleApiKeyVal
-        } else {
-            googleApiKey = ""
-        }
-        
         if let slackApiKeyVal = defaults.string(forKey: DefaultsKeys.slackApiKey) {
             slackApiKey = slackApiKeyVal
         } else {
@@ -60,8 +52,6 @@ struct SecretsView: View {
         print("saving settings")
         
         let defaults = UserDefaults.standard
-        
-        defaults.set(googleApiKey, forKey: DefaultsKeys.googleApiKey)
         defaults.set(slackApiKey, forKey: DefaultsKeys.slackApiKey)
         
         self.delegate?.settingsChanged()
@@ -70,7 +60,6 @@ struct SecretsView: View {
     func clearSettings() {
         print("clearing settings")
         
-        googleApiKey = ""
         slackApiKey = ""
         
         saveSettings()
@@ -106,4 +95,3 @@ struct SecureInputView: View {
         }
     }
 }
-

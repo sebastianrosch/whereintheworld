@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9E2EC00528DA58B700F5CCD5 /* whereintheworldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */; };
 		9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */; };
+		58BAD6A040A84174B79057A9 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BB3EA90E9F420A8DDAA9E2 /* InfoView.swift */; };
 		9E2EC00928DA58B800F5CCD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */; };
 		9E2EC00C28DA58B800F5CCD5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E2EC00B28DA58B800F5CCD5 /* Preview Assets.xcassets */; };
 		9E2ECB3F2922CCA200DF408D /* Slack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2ECB3E2922CCA200DF408D /* Slack.swift */; };
@@ -32,6 +33,7 @@
 		9E2EC00128DA58B700F5CCD5 /* whereintheworld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = whereintheworld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E2EC00428DA58B700F5CCD5 /* whereintheworldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = whereintheworldApp.swift; sourceTree = "<group>"; };
 		9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		13BB3EA90E9F420A8DDAA9E2 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		9E2EC00828DA58B800F5CCD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9E2EC00B28DA58B800F5CCD5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9E2EC00D28DA58B800F5CCD5 /* whereintheworld.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = whereintheworld.entitlements; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				9E2EC00628DA58B700F5CCD5 /* SettingsView.swift */,
+				13BB3EA90E9F420A8DDAA9E2 /* InfoView.swift */,
 				9E2ECB582924EFC400DF408D /* SecretsView.swift */,
 				9E2ECB5A2924F3B500DF408D /* SlackStatusSettingsView.swift */,
 				9E2ECB652929973900DF408D /* KnownLocationsSettingsView.swift */,
@@ -223,6 +226,7 @@
 				9E2ECB592924EFC400DF408D /* SecretsView.swift in Sources */,
 				9E2ECB662929973900DF408D /* KnownLocationsSettingsView.swift in Sources */,
 				9E2EC00728DA58B700F5CCD5 /* SettingsView.swift in Sources */,
+				58BAD6A040A84174B79057A9 /* InfoView.swift in Sources */,
 				9E2ECB622929786200DF408D /* SlackStatusDetailView.swift in Sources */,
 				9E2ECB412922CCBE00DF408D /* GoogleMaps.swift in Sources */,
 				9E2ECB432922CCFD00DF408D /* StatusItemController.swift in Sources */,

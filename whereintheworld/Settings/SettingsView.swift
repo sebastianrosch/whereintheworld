@@ -13,7 +13,6 @@ protocol SettingsViewDelegate {
 
 struct SettingsView: View {
     private var delegate:SettingsViewDelegate?
-    @State private var googleApiKey: String = ""
     @State private var slackApiKey: String = ""
     
     init(delegate:SettingsViewDelegate?) {
@@ -28,10 +27,10 @@ struct SettingsView: View {
             Text("where in the world")
             Text("")
             TabView {
-                SecretsView(delegate: self.delegate)
+                InfoView()
                     .tabItem {
-                        Label("Credentials", systemImage: "lock.rectangle")
-                        Text("Credentials")
+                        Label("Info", systemImage: "info.circle")
+                        Text("Info")
                     }
                 SlackStatusSettingsView(delegate: self.delegate)
                     .tabItem {
@@ -42,6 +41,11 @@ struct SettingsView: View {
                     .tabItem {
                         Label("Known Locations", systemImage: "lock.circle")
                         Text("Known Locations")
+                    }
+                SecretsView(delegate: self.delegate)
+                    .tabItem {
+                        Label("Settings", systemImage: "gearshape")
+                        Text("Settings")
                     }
             }
         }
