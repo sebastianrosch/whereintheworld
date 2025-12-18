@@ -21,7 +21,7 @@ struct SettingsView: View {
 
     var body: some View {
         VStack {
-            Image(systemName: "globe")
+            Image(systemName: "location.circle.fill")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Text("where in the world")

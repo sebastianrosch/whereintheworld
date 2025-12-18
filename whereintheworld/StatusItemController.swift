@@ -27,8 +27,6 @@ class StatusItemController {
         self.statusItem =  NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         self.active = true
         
-        self.statusItem.button?.title = "♾️"
-        
         // Status
         self.statusMenuItem = NSMenuItem(title: "Loading...", action: nil, keyEquivalent: "")
         
@@ -107,6 +105,8 @@ class StatusItemController {
         statusBarMenu.addItem(settingsButton)
         statusBarMenu.addItem(.separator())
         statusBarMenu.addItem(quitButton)
+
+        self.updateStatusBarIcon(active: self.active)
     }
     
     func setDelegate(delegate:StatusItemControllerDelegate?) {
@@ -121,12 +121,12 @@ class StatusItemController {
         if self.active {
             self.toggleButton.title = "Pause Tracking"
             self.toggleButton.keyEquivalent = "p"
-            self.statusItem.button?.title = "♾️"
         } else {
             self.toggleButton.title = "Resume Tracking"
             self.toggleButton.keyEquivalent = "p"
-            self.statusItem.button?.title = "||"
         }
+
+        self.updateStatusBarIcon(active: self.active)
     }
     
     @objc private func setSlackStatus(sender:Any) {
@@ -149,5 +149,17 @@ class StatusItemController {
     
     @objc func setLocation(location: String) {
         self.statusMenuItem.title = location
+    }
+
+    private func updateStatusBarIcon(active: Bool) {
+        guard let button = self.statusItem.button else { return }
+
+        let symbolName = active ? "location.circle.fill" : "pause.circle.fill"
+        let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)
+        image?.isTemplate = true
+
+        button.image = image
+        button.imagePosition = .imageOnly
+        button.title = ""
     }
 }
