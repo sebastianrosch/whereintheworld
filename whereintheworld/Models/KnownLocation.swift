@@ -19,7 +19,7 @@ struct KnownLocation: Codable, Identifiable {
             return postcodePrefix ?? ""
         }
         set {
-            postcodePrefix = newValue
+            postcodePrefix = newValue.isEmpty ? nil : newValue
         }
     }
     
@@ -28,7 +28,7 @@ struct KnownLocation: Codable, Identifiable {
             return ssid ?? ""
         }
         set {
-            ssid = newValue
+            ssid = newValue.isEmpty ? nil : newValue
         }
     }
 }

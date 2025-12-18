@@ -33,15 +33,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         print("applicationDidFinishLaunching")
         
         let defaults = UserDefaults.standard
-        var googleApiKey = ""
         var slackApiKey = ""
         var knownLocations:[KnownLocation] = []
         var manualSlackStatuses:[String] = []
         let permanentSlackStatusIcons:[String] = [":zoom:",":around:"]
         
-        if let googleApiKeyVal = defaults.string(forKey: DefaultsKeys.googleApiKey) {
-            googleApiKey = googleApiKeyVal
-        }
         if let slackApiKeyVal = defaults.string(forKey: DefaultsKeys.slackApiKey) {
             slackApiKey = slackApiKeyVal
         }
@@ -72,7 +68,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
             }
         }
         
-        if googleApiKey == "" || slackApiKey == "" {
+        if slackApiKey == "" {
             openSettings()
         } else {
             NSApplication.shared.keyWindow?.close()
@@ -83,8 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         statusItemController.setLocation(location: "Loading...")
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            self.locationController = LocationController(googleApiKey: googleApiKey,
-                                                         knownLocations: knownLocations)
+            self.locationController = LocationController(knownLocations: knownLocations)
             self.locationController.setDelegate(delegate: self)
             self.statusItemController.setLocation(location: "Waiting for location...")
         }
@@ -98,10 +93,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         // Get focus from other apps
         NSApplication.shared.activate(ignoringOtherApps: true)
 
+        let initialContentSize = NSSize(width: 760, height: 420)
+
         // Create the frame to draw window
         let settings = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 640, height: 480),
-            styleMask: [.titled, .closable, .fullSizeContentView],
+            contentRect: NSRect(x: 0, y: 0, width: initialContentSize.width, height: initialContentSize.height),
+            styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
         )
@@ -111,8 +108,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
         // Keeps window reference active, we need to use this when using NSHostingView
         settings.isReleasedWhenClosed = false
 
-        // Lets us use SwiftUI viws with AppKit
-        settings.contentView = NSHostingView(rootView: SettingsView(delegate: self))
+        // Lets us use SwiftUI views with AppKit
+        let hostingController = NSHostingController(rootView: SettingsView(delegate: self))
+        settings.contentViewController = hostingController
+
+        // Explicitly enforce a sensible initial size (SwiftUI can otherwise expand to fit content).
+        settings.setContentSize(initialContentSize)
+        settings.contentMinSize = NSSize(width: 720, height: 380)
+        settings.contentMaxSize = NSSize(width: 1000, height: 650)
 
         // Center and bring forward
         settings.center()
@@ -138,18 +141,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, StatusItemControllerDelegate
     
     func loadSettings() {
         let defaults = UserDefaults.standard
-        var googleApiKey = ""
         var slackApiKey = ""
+        var knownLocations:[KnownLocation] = []
         
-        if let googleApiKeyVal = defaults.string(forKey: DefaultsKeys.googleApiKey) {
-            googleApiKey = googleApiKeyVal
-        }
         if let slackApiKeyVal = defaults.string(forKey: DefaultsKeys.slackApiKey) {
             slackApiKey = slackApiKeyVal
         }
+        if let knownLocationsVal = defaults.data(forKey: DefaultsKeys.knownLocationsKey) {
+            do {
+                let decoder = JSONDecoder()
+                knownLocations = try decoder.decode([KnownLocation].self, from: knownLocationsVal)
+            } catch {
+                print("Unable to decode known locations (\(error))")
+            }
+        }
         
-        self.locationController.setGoogleApiKey(googleApiKey: googleApiKey)
-        self.slackController.setSlackApiKey(slackApiKey: slackApiKey)
+        if self.locationController != nil {
+            self.locationController.setKnownLocations(knownLocations: knownLocations)
+        }
+        if self.slackController != nil {
+            self.slackController.setSlackApiKey(slackApiKey: slackApiKey)
+        }
     }
 }
 

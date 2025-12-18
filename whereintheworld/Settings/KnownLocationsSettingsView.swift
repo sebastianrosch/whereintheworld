@@ -83,6 +83,8 @@ struct KnownLocationsSettingsView: View, KnownLocationDetailDelegate {
         
         knownLocations.append(
             KnownLocation(id: maxId+1, name: "Hamburg Office", type: "office", postcodePrefix: "20459"))
+
+        saveSettings()
         
         // Todo: navigate to new entry
     }
@@ -99,7 +101,8 @@ struct KnownLocationsSettingsView: View, KnownLocationDetailDelegate {
             knownLocations[elementAtIndex] = knownLocation
             saveSettings()
         } else {
-            print("couldn't find element with id \(knownLocation.id)")
+            knownLocations.append(knownLocation)
+            saveSettings()
         }
     }
     

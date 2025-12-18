@@ -30,42 +30,31 @@ struct KnownLocationDetailView: View {
         TypeOption(label:"Other", tag:"other")]
 
     var body: some View {
-        VStack {
-            Form {
-                Section(header: Text("KNOWN LOCATION")) {
-                    TextField("Name", text: $knownLocation.name)
-                    Picker("Type", selection: $knownLocation.type) {
-                        ForEach(typeOptions, id: \.self){ option in
-                            Text(option.label).tag(option.tag)
-                        }
-                    }
-                    TabView {
-                        TextField("Postcode Prefix", text: $knownLocation.postcodePrefixForUI)
-                            .tabItem {
-                                Label("Geolocation", systemImage: "lock.rectangle")
-                                Text("Geolocation")
-                            }
-                        TextField("SSID", text: $knownLocation.ssidForUI)
-                            .tabItem {
-                                Label("WiFi", systemImage: "lock.rectangle")
-                                Text("WiFi")
-                            }
+        Form {
+            Section(header: Text("KNOWN LOCATION")) {
+                TextField("Name", text: $knownLocation.name)
+                Picker("Type", selection: $knownLocation.type) {
+                    ForEach(typeOptions, id: \.self){ option in
+                        Text(option.label).tag(option.tag)
                     }
                 }
+                TextField("WiFi SSID (optional)", text: $knownLocation.ssidForUI)
+                TextField("Postcode Prefix (optional)", text: $knownLocation.postcodePrefixForUI)
             }
-            
-            Button("Delete") {
-                deleteKnownLocation()
+
+            Section {
+                Button("Delete") {
+                    deleteKnownLocation()
+                }
+
+                Button("Save") {
+                    saveKnownLocation()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.accentColor)
             }
-            
-            Button("Save") {
-                saveKnownLocation()
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.accentColor)
         }
-        .onAppear(perform: saveKnownLocation)
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func deleteKnownLocation(){
@@ -73,11 +62,6 @@ struct KnownLocationDetailView: View {
     }
     
     func saveKnownLocation(){
-        if (!(knownLocation.postcodePrefix ?? "").isEmpty && !(knownLocation.ssid ?? "").isEmpty) {
-            // If both are set, postcode has priority.
-            knownLocation.ssid = ""
-        }
-        
         delegate?.saveKnownLocation(knownLocation: knownLocation)
     }
 }
