@@ -10,4 +10,6 @@ struct DefaultsKeys {
     static let slackApiKey = "slackApiKey"
     static let slackStatusItemsKey = "slackStatusItems"
     static let knownLocationsKey = "knownLocations"
+    static let slackLastManagedStatusText = "slackLastManagedStatusText"
+    static let slackLastManagedStatusEmoji = "slackLastManagedStatusEmoji"
 }

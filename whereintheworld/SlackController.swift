@@ -22,6 +22,24 @@ class SlackController {
     func setSlackApiKey(slackApiKey: String){
         self.slackApiKey = slackApiKey
     }
+
+    private func isStatusUnset(statusText: String, statusEmoji: String) -> Bool {
+        return statusText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            statusEmoji.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func wasStatusSetByThisApp(statusText: String, statusEmoji: String) -> Bool {
+        let defaults = UserDefaults.standard
+        let lastManagedStatusText = defaults.string(forKey: DefaultsKeys.slackLastManagedStatusText) ?? ""
+        let lastManagedStatusEmoji = defaults.string(forKey: DefaultsKeys.slackLastManagedStatusEmoji) ?? ""
+        return statusText == lastManagedStatusText && statusEmoji == lastManagedStatusEmoji
+    }
+
+    private func saveLastManagedStatus(statusText: String, statusEmoji: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(statusText, forKey: DefaultsKeys.slackLastManagedStatusText)
+        defaults.set(statusEmoji, forKey: DefaultsKeys.slackLastManagedStatusEmoji)
+    }
     
     func setSlackStatus(statusText: String, withEmoji emoji: String, withExpiration expiration: Int = 0) {
         // Check the current Slack status before updating it.
@@ -49,10 +67,15 @@ class SlackController {
                 
                 do {
                     let profile = try decoder.decode(ProfileWrapper.self, from: data!)
+                    let currentStatusText = profile.profile?.status_text ?? ""
+                    let currentStatusEmoji = profile.profile?.status_emoji ?? ""
+                    let currentStatusIsUnset = self.isStatusUnset(statusText: currentStatusText, statusEmoji: currentStatusEmoji)
+                    let currentStatusIsManagedByApp = self.wasStatusSetByThisApp(statusText: currentStatusText, statusEmoji: currentStatusEmoji)
                     
-                    // If in a permanent status, do not update.
-                    if !self.permanentStatusIcons.contains(profile.profile?.status_emoji ?? "") &&
-                        !self.permanentStatuses.contains(profile.profile?.status_text ?? ""){
+                    // Update only when the current status is empty or was previously set by this app.
+                    if (currentStatusIsUnset || currentStatusIsManagedByApp) &&
+                        !self.permanentStatusIcons.contains(currentStatusEmoji) &&
+                        !self.permanentStatuses.contains(currentStatusText) {
                         
                         var expirationEpoch = expiration
                         if expiration != 0 {
@@ -82,10 +105,13 @@ class SlackController {
                                     return
                                 }
                                 print("updated Slack status to " + statusText)
+                                self.saveLastManagedStatus(statusText: statusText, statusEmoji: emoji)
                             }
                         })
                         
                         setStatusTask.resume()
+                    } else {
+                        print("skipping Slack status update because current status is user-managed")
                     }
                 } catch {
                     print("Response failed to decode")

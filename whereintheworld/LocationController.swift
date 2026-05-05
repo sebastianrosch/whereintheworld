@@ -97,6 +97,10 @@ class LocationController: NSObject, CLLocationManagerDelegate {
     }
     
     @objc func checkSSIDs() {
+        if !self.userTrackingEnabled {
+            return
+        }
+
         let wasSSIDKnown = self.isSSIDKnown
 
         // Get current WifiSSID to add to location identifiers
@@ -282,6 +286,9 @@ class LocationController: NSObject, CLLocationManagerDelegate {
             }
             
             self.setNewLocation(location: resolvedLocation, withLocationType: locationType, withCountry: country)
+            if !self.userTrackingEnabled {
+                return
+            }
             self.delegate?.setSlackStatus(statusText: resolvedLocation + ", " + country, withEmoji: emoji, withExpiration: 0)
         }
     }
